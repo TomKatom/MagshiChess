@@ -9,7 +9,6 @@ public:
 
 	void playTurn(std::string& getMessageFromGraphics);
 
-
 private:
 	Pipe _p;
 	Color _currentPlayerTurn;
