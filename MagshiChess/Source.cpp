@@ -6,6 +6,7 @@ in order to read and write information from and to the Backend
 
 #include "Pipe.h"
 #include "Player.h"
+#include "Game.h"
 #include <iostream>
 #include <thread>
 
@@ -16,8 +17,9 @@ using std::string;
 void check_rook()
 {
 	srand(time_t(NULL));
-
-	Player player;
+	std::string str = "r######r################################################R######R1";
+	
+	//ayer playerPl(white);
 	Pipe p;
 	bool isConnect = p.connect();
 
@@ -41,18 +43,18 @@ void check_rook()
 		}
 	}
 
-	player.setPipe(p);
 
 	char msgToGraphics[1024];
 	// msgToGraphics should contain the board string accord the protocol
 	// YOUR CODE
 
-	strcpy_s(msgToGraphics, "r######r################################################R######Rl"); // just example...
+	strcpy_s(msgToGraphics, "r######r################################################R######R1"); // just example...
 
 	p.sendMessageToGraphics(msgToGraphics);   // send the board string
 
 	// get message from graphics
 	string msgFromGraphics = p.getMessageFromGraphics();
+	Game g(str, p);
 
 	while (msgFromGraphics != "quit")
 	{
@@ -61,7 +63,7 @@ void check_rook()
 
 		// YOUR CODE
 		//strcpy_s(msgToGraphics, player.makeMove(msgFromGraphics)); // msgToGraphics should contain the result of the operation
-		player.makeMove(msgFromGraphics);
+		g.playTurn(msgFromGraphics);
 
 		// return result to graphics		
 		//p.sendMessageToGraphics(msgToGraphics);

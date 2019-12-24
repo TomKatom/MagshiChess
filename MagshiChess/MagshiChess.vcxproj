@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="PipeInputOperations.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PipeInputOperations.h" />

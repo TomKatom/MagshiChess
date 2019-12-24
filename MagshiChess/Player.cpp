@@ -1,18 +1,9 @@
 #include "Player.h"
 
-Player::Player() //c'tor
+Player::Player(Color c, std::string& startingBoard) //c'tor
 {
-	this->_board = new Piece**[8];
-
-	for (int i = 0; i < 8; i++)
-	{
-		this->_board[i] = new Piece*[8];
-		
-	}
-	this->_board[0][0]->setColor(this->_color);
-	this->_board[0][1]->setColor(this->_color);
-
-
+	this->_color = c;
+	this->_board = PipeInputOperations::generateBoard(this->_color, startingBoard);
 }
 
 Player::~Player()  //d'tor
@@ -21,25 +12,13 @@ Player::~Player()  //d'tor
 	delete[] this->_board;
 }
 
-void Player::setPipe(Pipe p)
-{
-	this->_p = p;
-}
-
 void Player::makeMove(std::string& msgFromGraphics)
 {
-
-	error_level_code move_code = isValidCMD(msgFromGraphics);
-
-	if (move_code == valid || move_code == valid_check || move_code == check_mate)
-	{
-
-	}
-	char msgToGraphics[1024];
-	msgToGraphics[0] = (char)(move_code + '0');
-	msgToGraphics[1] = 0;
-
-	this->_p.sendMessageToGraphics(msgToGraphics);
+	int srcRow, srcCol, dstRow, dstCol;
+	std::tie(srcRow, srcCol, dstRow, dstCol) = PipeInputOperations::moveToPos(msgFromGraphics);
+	Piece* temp = this->_board[srcRow][srcCol];
+	this->_board[dstRow][dstCol] = temp;
+	this->_board[srcRow][srcCol] = nullptr;
 
 }
 error_level_code Player::isValidCMD(std::string& msgFromGraphics) const
@@ -54,11 +33,13 @@ error_level_code Player::isValidCMD(std::string& msgFromGraphics) const
 	{
 		response_code = invalid_src_not_occupied;
 	}
-	else if (this->_board[dstRow][dstCol]->getColor() == this->_color) //check error_level_code 3 - in dst position there is piece of curr player
+	//check error_level_code 3 - in dst position there is piece of curr player
+	else if (this->_board[dstRow][dstCol] != nullptr && this->_board[dstRow][dstCol]->getColor() == this->_color)
 	{
 		response_code = invalid_dst_occupied;
-	}
-	else if (!this->_board[srcRow][srcCol]->validMove(this->_board, msgFromGraphics)) //check error_level_code 6 - invalid move of piece
+	} 
+	//check error_level_code 6 - invalid move of piece
+	else if (this->_board[dstRow][dstCol] != nullptr && !this->_board[srcRow][srcCol]->validMove(this->_board, msgFromGraphics))
 	{
 		response_code = invalid_behevior; 
 	}
@@ -66,7 +47,7 @@ error_level_code Player::isValidCMD(std::string& msgFromGraphics) const
 	{
 		response_code = invlaid_same_src_dst;
 	}
-	else
+	else   //TODO: add check to check and mate
 	{
 		return valid;
 	}
