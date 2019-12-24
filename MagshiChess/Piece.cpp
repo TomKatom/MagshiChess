@@ -10,3 +10,6 @@ Color Piece::getColor() const{
 Piece::~Piece() {
 
 }
+char Piece::getPieceChar() const {
+	return this->_pieceChar;
+}

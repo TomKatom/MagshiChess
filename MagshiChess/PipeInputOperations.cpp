@@ -1,3 +1,4 @@
+#pragma once
 #include "PipeInputOperations.h"
 #include <tuple>
 std::tuple<int, int, int, int> PipeInputOperations::moveToPos(std::string move) {
