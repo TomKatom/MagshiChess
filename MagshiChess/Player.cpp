@@ -37,10 +37,9 @@ error_level_code Player::isValidCMD(std::string& msgFromGraphics) const
 	std::tie(srcRow, srcCol, dstRow, dstCol) = PipeInputOperations::moveToPos(msgFromGraphics);
 	error_level_code response_code = valid; 
 
-
-	return valid;
+	
 	//check error_level_code 2 - in src position there is no piece of curr player
-	if (this->_board[srcRow][srcCol]->getColor() != this->_color)
+	if (this->_board[srcRow][srcCol] == nullptr || this->_board[srcRow][srcCol]->getColor() != this->_color)
 	{
 		response_code = invalid_src_not_occupied;
 	}
