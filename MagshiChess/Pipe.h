@@ -2,30 +2,30 @@
 * Module Name:	CppNamedPipeClient.cpp
 * Project:		CppNamedPipeClient
 * Copyright (c) Microsoft Corporation.
-* 
-* Named pipe is a mechanism for one-way or bi-directional inter-process 
+*
+* Named pipe is a mechanism for one-way or bi-directional inter-process
 * communication between the pipe server and one or more pipe clients in the
 * local machine or across the computers in the intranet:
-* 
+*
 * PIPE_ACCESS_INBOUND:
 * Client (GENERIC_WRITE) ---> Server (GENERIC_READ)
-* 
+*
 * PIPE_ACCESS_OUTBOUND:
 * Client (GENERIC_READ) <--- Server (GENERIC_WRITE)
-* 
+*
 * PIPE_ACCESS_DUPLEX:
-* Client (GENERIC_READ or GENERIC_WRITE, or both) <--> 
+* Client (GENERIC_READ or GENERIC_WRITE, or both) <-->
 * Server (GENERIC_READ and GENERIC_WRITE)
-* 
-* This sample demonstrates a named pipe client that attempts to connect to   
-* the pipe server, \\.\pipe\HelloWorld, with the GENERIC_READ and 
-* GENERIC_WRITE permissions. The client writes a message to the pipe server 
+*
+* This sample demonstrates a named pipe client that attempts to connect to
+* the pipe server, \\.\pipe\HelloWorld, with the GENERIC_READ and
+* GENERIC_WRITE permissions. The client writes a message to the pipe server
 * and receive its response.
-* 
+*
 * This source is subject to the Microsoft Public License.
 * See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL.
 * All other rights reserved.
-* 
+*
 * History:
 * * 1/11/2009 11:20 PM Jialiang Ge Created
 \***************************************************************************/
@@ -57,8 +57,8 @@ public:
 	Pipe()
 	{
 		// Prepare the pipe name
-		strPipeName  = (LPTSTR)TEXT("\\\\.\\pipe\\chessPipe");
-			
+		strPipeName = (LPTSTR)TEXT("\\\\.\\pipe\\chessPipe");
+
 	}
 
 	bool connect()
@@ -102,7 +102,7 @@ public:
 		// Send one message to the pipe.
 
 		cbRequestBytes = sizeof(TCHAR) * (lstrlen(chRequest) + 1);
-		
+
 		BOOL bResult = WriteFile(			// Write to the pipe.
 			hPipe,						// Handle of the pipe
 			chRequest,					// Message to be written
