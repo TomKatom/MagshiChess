@@ -2,6 +2,17 @@
 
 Player::Player() //c'tor
 {
+	this->_board = new Piece**[8];
+
+	for (int i = 0; i < 8; i++)
+	{
+		this->_board[i] = new Piece*[8];
+		
+	}
+	this->_board[0][0]->setColor(this->_color);
+	this->_board[0][1]->setColor(this->_color);
+
+
 }
 
 Player::~Player()  //d'tor
