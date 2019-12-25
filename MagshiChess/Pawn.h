@@ -9,7 +9,7 @@ class Pawn : public Piece {
 public:
 	Pawn(Color c); 
 	~Pawn();
-	bool validMove(Piece*** board, std::string& move);
+	bool validMove(Piece*** board, std::string move);
 
 private:
 	bool _moved;
