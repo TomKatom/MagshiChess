@@ -23,7 +23,7 @@ bool Bishop::validMove(Piece*** board, std::string move) {
 	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
 	std::tie(srcRow, srcCol, dstRow, dstCol) = PipeInputOperations::moveToPos(move);
 	if (dstRow - srcRow == dstCol - srcCol and dstCol > srcCol and dstRow > srcRow ) { // Top Right Diagnoal
-		for (int i = srcRow + 1, j = srcCol + 1; i < dstCol; i++, j++) {
+		for (int i = srcRow + 1, j = srcCol + 1; i < dstRow; i++, j++) {
 			if (board[i][j] != nullptr) {
 				return false;
 			}
