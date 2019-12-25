@@ -14,10 +14,10 @@ using std::cout;
 using std::endl;
 using std::string;
 
-void check_rook()
+void check_pieces()
 {
 	srand(time_t(NULL));
-	std::string str = "r######rpppppppp################################BPPPPPPPR######R0";
+	std::string str = "r#b##b#rpppppppp################################PPPPPPPPR#B##B#R0";
 	
 	//ayer playerPl(white);
 	Pipe p;
@@ -77,7 +77,7 @@ void check_rook()
 
 void main()
 {
-	check_rook();
+	check_pieces();
 	/*
 	srand(time_t(NULL));
 
