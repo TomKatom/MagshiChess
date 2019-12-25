@@ -9,7 +9,7 @@
 class Player
 {
 public: 
-	Player(Color c, std::string& startingBoard);    //c'tor
+	Player(Color c, std::string startingBoard);    //c'tor
 	~Player();   //d'tor
 
 	void makeMove(std::string& msgFromGraphics);

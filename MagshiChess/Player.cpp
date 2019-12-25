@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(Color c, std::string& startingBoard) //c'tor
+Player::Player(Color c, std::string startingBoard) //c'tor
 {
 	this->_color = c;
 	this->_board = PipeInputOperations::generateBoard(this->_color, startingBoard);

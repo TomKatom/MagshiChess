@@ -17,8 +17,8 @@ using std::string;
 void check_pieces()
 {
 	srand(time_t(NULL));
-	std::string str = "r#b##b#rpppppppp################################PPPPPPPPR#BQ#B#R0";
-	
+	std::string str4gui = "r#bq#b#rpppppppp################################PPPPPPPPR#BQ#B#R1";
+	std::string str4game = "r#b#qb#rpppppppp################################PPPPPPPPR#B#QB#R";
 	//ayer playerPl(white);
 	Pipe p;
 	bool isConnect = p.connect();
@@ -48,13 +48,13 @@ void check_pieces()
 	// msgToGraphics should contain the board string accord the protocol
 	// YOUR CODE
 
-	strcpy_s(msgToGraphics,str.c_str()); // just example...
+	strcpy_s(msgToGraphics, str4gui.c_str()); // just example...
 
 	p.sendMessageToGraphics(msgToGraphics);   // send the board string
 
 	// get message from graphics
 	string msgFromGraphics = p.getMessageFromGraphics();
-	Game g(str, p);
+	Game g(str4game, p);
 
 	while (msgFromGraphics != "quit")
 	{

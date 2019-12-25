@@ -5,11 +5,11 @@
 Game::Game(std::string& startingBoard, Pipe& p)
 {
 	std::string revreseBoard = startingBoard;
-	reverse(revreseBoard.begin(), revreseBoard.end() - 1);
+	reverse(revreseBoard.begin(), revreseBoard.end() );
 
 	this->_whitePlayer = new Player(white, revreseBoard);
 	this->_blackPlayer = new Player(black, revreseBoard);
-	this->_currentPlayerTurn = white;
+	this->_currentPlayerTurn = black;
 	this->_p = p;
 }
 

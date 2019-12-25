@@ -26,7 +26,7 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 		for (int j = 7; j >= 0; j--)
 		{
 			ch = startingBoard.at(i*8 +j);
-			if (isupper(ch))
+			if (isupper(ch) && (ch != 'q'))
 				piece_color = white;
 			else
 				piece_color = black;
