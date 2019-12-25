@@ -26,7 +26,7 @@ bool King::validMove(Piece*** board, std::string move)
 {
 	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
 	std::tie(srcRow, srcCol, dstRow, dstCol) = PipeInputOperations::moveToPos(move);
-	if (std::abs(srcCol - dstCol) == MOVING_RANGE && std::abs(srcRow - dstRow) == MOVING_RANGE)
+	if (std::abs(srcCol - dstCol) <= MOVING_RANGE && std::abs(srcRow - dstRow) <= MOVING_RANGE)
 		return true;
 	else return false;
 }
