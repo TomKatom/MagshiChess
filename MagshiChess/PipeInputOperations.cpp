@@ -41,6 +41,10 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 			case 'P':
 				temp[i][j] = new Pawn(piece_color);
 				break;
+			case 'b':
+			case 'B':
+				temp[i][j] = new Bishop(piece_color);
+				break;
 			case '#':
 				temp[i][j] = nullptr;
 				break;

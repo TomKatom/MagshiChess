@@ -4,6 +4,7 @@
 #include <string>
 #include "Rook.h"
 #include "Pawn.h"
+#include "Bishop.h"
 #include <locale>
  
 class PipeInputOperations {
