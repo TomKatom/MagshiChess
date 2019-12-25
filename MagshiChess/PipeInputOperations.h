@@ -5,6 +5,7 @@
 #include "Rook.h"
 #include "Pawn.h"
 #include "Bishop.h"
+#include "Queen.h"
 #include <locale>
  
 class PipeInputOperations {
