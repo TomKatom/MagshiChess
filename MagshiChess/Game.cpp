@@ -38,7 +38,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 
 		this->_p.sendMessageToGraphics(msgToGraphics);
 
-		if (move_code == valid)
+		if (move_code == valid || move_code == valid_check || move_code == check_mate)
 		{
 			//TODO: change it when converting to multyplayer
 			this->_whitePlayer->makeMove(messageFromGraphics);

@@ -37,14 +37,14 @@ error_level_code Player::isValidCMD(std::string& msgFromGraphics) const
 	{
 		response_code = invalid_dst_occupied;
 	} 
+	else if (srcRow == dstRow && srcCol == dstCol)  //check error_level_vode 7 - dst posiiton and src position are same
+	{
+		response_code = invlaid_same_src_dst;
+	}
 	//check error_level_code 6 - invalid move of piece
 	else if (this->_board[srcRow][srcCol] != nullptr && !this->_board[srcRow][srcCol]->validMove(this->_board, msgFromGraphics))
 	{
 		response_code = invalid_behevior; 
-	}
-	else if (srcRow == dstRow && srcCol == dstCol)  //check error_level_vode 7 - dst posiiton and src position are same
-	{
-		response_code = invlaid_same_src_dst;
 	}
 	else   //TODO: add check to check and mate
 	{
