@@ -11,10 +11,10 @@ Pawn::Pawn(Color c) : Piece(c)
 	*/
 	switch (c) {
 	case white:
-		this->_pieceChar = 'R';
+		this->_pieceChar = 'P';
 		break;
 	case black:
-		this->_pieceChar = 'r';
+		this->_pieceChar = 'p';
 		break;
 	}
 }
