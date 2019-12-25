@@ -3,6 +3,7 @@
 #include "Piece.h"
 #include <string>
 #include "Rook.h"
+#include "Pawn.h"
 #include <locale>
  
 class PipeInputOperations {

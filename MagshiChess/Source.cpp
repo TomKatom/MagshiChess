@@ -17,7 +17,7 @@ using std::string;
 void check_rook()
 {
 	srand(time_t(NULL));
-	std::string str = "r######r################################################R######R1";
+	std::string str = "r######rpppppppp################################PPPPPPPPR######R0";
 	
 	//ayer playerPl(white);
 	Pipe p;
@@ -48,7 +48,7 @@ void check_rook()
 	// msgToGraphics should contain the board string accord the protocol
 	// YOUR CODE
 
-	strcpy_s(msgToGraphics, "r######r################################################R######R1"); // just example...
+	strcpy_s(msgToGraphics,str.c_str()); // just example...
 
 	p.sendMessageToGraphics(msgToGraphics);   // send the board string
 

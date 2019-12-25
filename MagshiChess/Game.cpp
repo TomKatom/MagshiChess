@@ -9,7 +9,7 @@ Game::Game(std::string& startingBoard, Pipe& p)
 
 	this->_whitePlayer = new Player(white, revreseBoard);
 	this->_blackPlayer = new Player(black, revreseBoard);
-	this->_currentPlayerTurn = black;
+	this->_currentPlayerTurn = white;
 	this->_p = p;
 }
 
