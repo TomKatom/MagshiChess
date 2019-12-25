@@ -61,4 +61,5 @@ bool Rook::validMove(Piece*** board, std::string move) {
 	else {
 		return false;
 	}
+	return false;
 }

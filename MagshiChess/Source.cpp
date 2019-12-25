@@ -17,7 +17,7 @@ using std::string;
 void check_pieces()
 {
 	srand(time_t(NULL));
-	std::string str = "r#b##b#rpppppppp################################PPPPPPPPR#B##B#R0";
+	std::string str = "r#b##b#rpppppppp################################PPPPPPPPR#BQ#B#R0";
 	
 	//ayer playerPl(white);
 	Pipe p;
@@ -75,7 +75,7 @@ void check_pieces()
 	p.close();
 }
 
-void main()
+int main()
 {
 	check_pieces();
 	/*
@@ -136,4 +136,5 @@ void main()
 
 	p.close();
 	*/
+	return 0;
 }
