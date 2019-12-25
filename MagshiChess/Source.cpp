@@ -17,7 +17,7 @@ using std::string;
 void check_rook()
 {
 	srand(time_t(NULL));
-	std::string str = "r######rpppppppp################################PPPPPPPPR######R0";
+	std::string str = "r######rpppppppp################################BPPPPPPPR######R0";
 	
 	//ayer playerPl(white);
 	Pipe p;
