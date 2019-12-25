@@ -38,8 +38,6 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 				temp[i][j] = new Rook(piece_color);
 				break;
 			case 'p':
-				temp[i][j] = new Pawn(piece_color);
-				break;
 			case 'P':
 				temp[i][j] = new Pawn(piece_color);
 				break;
