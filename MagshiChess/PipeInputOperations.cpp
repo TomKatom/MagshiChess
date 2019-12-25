@@ -49,6 +49,10 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 			case 'Q':
 				temp[i][j] = new Queen(piece_color);
 				break;
+			case 'K':
+			case 'k':
+				temp[i][j] = new King(piece_color);
+				break;
 			case '#':
 				temp[i][j] = nullptr;
 				break;
