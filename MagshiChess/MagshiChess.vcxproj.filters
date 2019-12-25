@@ -11,6 +11,7 @@
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Queen.cpp" />
+    <ClCompile Include="King.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Piece.h" />
@@ -24,5 +25,6 @@
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Bishop.h" />
     <ClInclude Include="Queen.h" />
+    <ClInclude Include="King.h" />
   </ItemGroup>
 </Project>

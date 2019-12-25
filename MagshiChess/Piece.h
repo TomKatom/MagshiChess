@@ -10,6 +10,7 @@ public:
 	Piece() {};
 	void setColor(Color c) { this->_color = c; }
 	virtual bool validMove(Piece*** board, std::string move) = 0;  //pure virtual function
+	//virtual bool isChecked();
 	Color getColor() const;  
 	char getPieceChar() const;
 

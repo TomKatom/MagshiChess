@@ -1,8 +1,8 @@
 #include "Queen.h"
-Queen::Queen(Color color)  {
+Queen::Queen(Color color) : Piece(color)
+{
 	this->_rook = new Rook(color);
 	this->_bishop = new Bishop(color);
-	this->_color = color;
 	switch (color) {
 	case white:
 		this->_pieceChar = 'Q';
