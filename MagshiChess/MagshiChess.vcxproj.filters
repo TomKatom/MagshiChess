@@ -26,5 +26,6 @@
     <ClInclude Include="Bishop.h" />
     <ClInclude Include="Queen.h" />
     <ClInclude Include="King.h" />
+    <ClInclude Include="Knight.h" />
   </ItemGroup>
 </Project>
