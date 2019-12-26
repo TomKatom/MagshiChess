@@ -16,6 +16,6 @@ Queen::~Queen() {
 	delete this->_rook;
 	delete this->_bishop;
 }
-bool Queen::validMove(Piece*** board, std::string move) {
-	return (this->_bishop->validMove(board, move) or this->_rook->validMove(board, move));
+bool Queen::validMove(Piece*** board, std::tuple<int, int, int, int> positions) {
+	return (this->_bishop->validMove(board, positions) or this->_rook->validMove(board, positions));
 }

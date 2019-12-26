@@ -1,6 +1,5 @@
 #include "Pawn.h"
 #include "PipeInputOperations.h"
-#include <tuple>
 #include <cmath>        // std::abs
 
 Pawn::Pawn(Color c) : Piece(c)
@@ -23,10 +22,10 @@ Pawn::~Pawn()
 {
 }
 
-bool Pawn::validMove(Piece*** board, std::string move)
+bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 {
 	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = PipeInputOperations::moveToPos(move);
+	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
 
 	if (board[dstRow][dstCol] != nullptr && board[dstRow][dstCol]->getColor() != this->_color)  //when eating enemy piece
 	{			
