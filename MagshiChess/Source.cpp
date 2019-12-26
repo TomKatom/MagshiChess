@@ -17,8 +17,8 @@ using std::string;
 void check_pieces()
 {
 	srand(time_t(NULL));
-	std::string str4gui = "r#bqkb#rpppppppp################################PPPPPPPPR#BQKB#R1";
-	std::string str4game = "r#bkqb#rpppppppp################################PPPPPPPPR#BKQB#R";
+	std::string str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR1";
+	std::string str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 	//ayer playerPl(white);
 	Pipe p;
 	bool isConnect = p.connect();
