@@ -7,6 +7,7 @@
 #include "Bishop.h"
 #include "King.h"
 #include "Queen.h"
+#include "Knight.h"
 #include <locale>
  
 class PipeInputOperations {
