@@ -20,7 +20,7 @@ public:
 private:
 	Piece*** _board;
 	Color _color;
-	//King* _king;
+	King* _king;
 	//SOCKET _server;  //TODO: Add class that communicate with the server
 	//void connectToAServer(); //This function connect to server and get the color of the player (white/black)
 

@@ -4,10 +4,10 @@ Queen::Queen(Color color) : Piece(color)
 	this->_rook = new Rook(color);
 	this->_bishop = new Bishop(color);
 	switch (color) {
-	case white:
+	case Color::white:
 		this->_pieceChar = 'Q';
 		break;
-	case black:
+	case Color::black:
 		this->_pieceChar = 'q';
 		break;
 	}

@@ -8,7 +8,7 @@ public:
 	~King();
 
 	virtual bool validMove(Piece*** board, std::string move);
-	//virtual isChecked();
+	//virtual bool isChecked(Piece*** board);
 
 private:
 	bool _moved;

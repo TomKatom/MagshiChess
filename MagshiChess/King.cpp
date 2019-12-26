@@ -9,10 +9,10 @@ King::King(Color color) : Piece(color)
 Setting the pieceChar according to the color of the piece
 */
 	switch (color) {
-	case white:
+	case Color::white:
 		this->_pieceChar = 'K';
 		break;
-	case black:
+	case Color::black:
 		this->_pieceChar = 'k';
 		break;
 	}

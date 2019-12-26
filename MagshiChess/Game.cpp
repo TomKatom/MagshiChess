@@ -7,9 +7,9 @@ Game::Game(std::string& startingBoard, Pipe& p)
 	std::string revreseBoard = startingBoard;
 	reverse(revreseBoard.begin(), revreseBoard.end() );
 
-	this->_whitePlayer = new Player(white, revreseBoard);
-	this->_blackPlayer = new Player(black, revreseBoard);
-	this->_currentPlayerTurn = black;
+	this->_whitePlayer = new Player(Color::white, revreseBoard);
+	this->_blackPlayer = new Player(Color::black, revreseBoard);
+	this->_currentPlayerTurn = Color::black;
 	this->_p = p;
 }
 
@@ -24,7 +24,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 {
 	error_level_code move_code;
 	
-	if (this->_currentPlayerTurn == black)
+	if (this->_currentPlayerTurn == Color::black)
 	{
 		move_code = this->_blackPlayer->isValidCMD(messageFromGraphics);
 	}
@@ -45,10 +45,10 @@ void Game::playTurn(std::string& messageFromGraphics)
 			this->_blackPlayer->makeMove(messageFromGraphics);
 
 
-			if (this->_currentPlayerTurn == white)
-				this->_currentPlayerTurn = black;
+			if (this->_currentPlayerTurn == Color::white)
+				this->_currentPlayerTurn = Color::black;
 			else
-				this->_currentPlayerTurn = white;
+				this->_currentPlayerTurn = Color::white;
 		}
 	
 }

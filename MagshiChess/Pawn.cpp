@@ -10,10 +10,10 @@ Pawn::Pawn(Color c) : Piece(c)
 	Setting the pieceChar according to the color of the piece
 	*/
 	switch (c) {
-	case white:
+	case Color::white:
 		this->_pieceChar = 'P';
 		break;
-	case black:
+	case Color::black:
 		this->_pieceChar = 'p';
 		break;
 	}
@@ -30,8 +30,8 @@ bool Pawn::validMove(Piece*** board, std::string move)
 
 	if (board[dstRow][dstCol] != nullptr && board[dstRow][dstCol]->getColor() != this->_color)  //when eating enemy piece
 	{			
-		if ((this->_color == white && (dstRow - srcRow)== MOVED_PAWN_MOVING_RANGE) ||
-			(this->_color == black && (srcRow - dstRow) == MOVED_PAWN_MOVING_RANGE))
+		if ((this->_color == Color::white && (dstRow - srcRow)== MOVED_PAWN_MOVING_RANGE) ||
+			(this->_color == Color::black && (srcRow - dstRow) == MOVED_PAWN_MOVING_RANGE))
 		{
 			if (std::abs(srcCol - dstCol) == PAWN_EATING_MOVE_RANGE) {
 				if (!this->_moved) this->_moved = true;  //update bool var _moved
@@ -49,15 +49,15 @@ bool Pawn::validMove(Piece*** board, std::string move)
 		{
 			if (this->_moved) //piece moved already
 			{
-				if ((this->_color == white && (dstRow - srcRow) == MOVED_PAWN_MOVING_RANGE) ||
-					(this->_color == black && (srcRow - dstRow) == MOVED_PAWN_MOVING_RANGE))
+				if ((this->_color == Color::white && (dstRow - srcRow) == MOVED_PAWN_MOVING_RANGE) ||
+					(this->_color == Color::black && (srcRow - dstRow) == MOVED_PAWN_MOVING_RANGE))
 					return true;
 				else return false;
 			}
 			else  //first step
 			{
-				if ((this->_color == white && ((dstRow - srcRow) == MOVED_PAWN_MOVING_RANGE || (dstRow - srcRow) == UNMOVED_PAWN_MOVING_RANGE)) ||
-					(this->_color == black && ((srcRow - dstRow) == MOVED_PAWN_MOVING_RANGE || (srcRow - dstRow) == UNMOVED_PAWN_MOVING_RANGE)) )
+				if ((this->_color == Color::white && ((dstRow - srcRow) == MOVED_PAWN_MOVING_RANGE || (dstRow - srcRow) == UNMOVED_PAWN_MOVING_RANGE)) ||
+					(this->_color == Color::black && ((srcRow - dstRow) == MOVED_PAWN_MOVING_RANGE || (srcRow - dstRow) == UNMOVED_PAWN_MOVING_RANGE)) )
 				{
 					this->_moved = true;
 					return true;

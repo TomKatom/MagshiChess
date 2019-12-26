@@ -8,10 +8,10 @@ Rook::Rook(Color color) : Piece(color) {
 	Setting the pieceChar according to the color of the piece
 	*/
 	switch (color) {
-		case white:
+		case Color::white:
 			this->_pieceChar = 'R';
 			break;
-		case black:
+		case Color::black:
 			this->_pieceChar = 'r';
 			break;
 	}

@@ -4,6 +4,8 @@ Player::Player(Color c, std::string startingBoard) //c'tor
 {
 	this->_color = c;
 	this->_board = PipeInputOperations::generateBoard(this->_color, startingBoard);
+	if (c == Color::black) this->_king = dynamic_cast<King*>( this->_board[7][3]);
+	else this->_king = dynamic_cast<King*>(this->_board[0][4]);
 }
 
 Player::~Player()  //d'tor
