@@ -141,6 +141,7 @@
     <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="King.cpp" />
+    <ClCompile Include="Knight.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="PipeInputOperations.cpp" />
