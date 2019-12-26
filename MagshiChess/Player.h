@@ -4,7 +4,7 @@
 #include "Piece.h"
 #include "Pipe.h"
 #include "PipeInputOperations.h"
-#include <tuple>
+#include "King.h"
 
 class Player
 {
@@ -12,10 +12,12 @@ public:
 	Player(Color c, std::string startingBoard);    //c'tor
 	~Player();   //d'tor
 
-	void makeMove(std::string& msgFromGraphics);
-
-	error_level_code isValidCMD(std::string& msgFromGraphics) const; //
-
+	void makeMove(std::tuple<int, int, int, int> positions);
+	void undoMove(std::tuple<int, int, int, int>positions);
+	King* getKing();
+	Piece*** getBoard();
+	error_level_code isValidCMD(std::tuple<int, int, int, int> positions);
+	bool isChecked(Piece*** board, std::tuple<int, int, int, int> positions);
 
 private:
 	Piece*** _board;

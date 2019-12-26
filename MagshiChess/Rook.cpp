@@ -19,9 +19,11 @@ Rook::Rook(Color color) : Piece(color) {
 Rook::~Rook() {
 
 }
-bool Rook::validMove(Piece*** board, std::string move) {
-	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = PipeInputOperations::moveToPos(move);
+
+
+bool Rook::validMove(Piece*** board, std::tuple<int, int, int, int> positions) {
+	int srcRow, srcCol, dstRow, dstCol;
+	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
 	if (srcCol == dstCol) {
 		if (srcRow < dstRow) {
 			for (int i = srcRow + 1; i < dstRow; i++) {

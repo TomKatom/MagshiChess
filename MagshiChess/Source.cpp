@@ -17,7 +17,7 @@ using std::string;
 void check_pieces()
 {
 	srand(time_t(NULL));
-	std::string str4gui = "r#bqkb#rpppppppp################################PPPPPPPPR#BQKB#R1";
+	std::string str4gui = "r#bqkb#rpppppppp################################PPPPPPPPR#BQKB#R0";
 	std::string str4game = "r#bkqb#rpppppppp################################PPPPPPPPR#BKQB#R";
 	//ayer playerPl(white);
 	Pipe p;

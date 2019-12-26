@@ -19,9 +19,9 @@ Bishop::Bishop(Color color) : Piece(color){
 Bishop::~Bishop() {
 
 }
-bool Bishop::validMove(Piece*** board, std::string move) {
+bool Bishop::validMove(Piece*** board, std::tuple<int, int, int, int> positions) {
 	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = PipeInputOperations::moveToPos(move);
+	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
 	if (dstRow - srcRow == dstCol - srcCol and dstCol > srcCol and dstRow > srcRow ) { // Top Right Diagnoal
 		for (int i = srcRow + 1, j = srcCol + 1; i < dstRow; i++, j++) {
 			if (board[i][j] != nullptr) {
