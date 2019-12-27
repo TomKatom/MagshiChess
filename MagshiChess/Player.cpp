@@ -23,10 +23,16 @@ Piece*** Player::getBoard()
 {
 	return this->_board;
 }
-void Player::makeMove(std::tuple<int,int,int,int>positions)
+std::tuple<bool, Piece*> Player::makeMove(std::tuple<int,int,int,int>positions)
 {
 	int srcRow, srcCol, dstRow, dstCol;
+	std::tuple<bool, Piece*> eatenPiece;
 	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
+
+	if (this->_board[dstRow][dstCol] == nullptr)
+		eatenPiece = std::make_tuple(false, nullptr);
+	else eatenPiece = std::make_tuple(true, this->_board[dstRow][dstCol]);
+	
 	Piece* temp = this->_board[srcRow][srcCol];
 	this->_board[dstRow][dstCol] = temp;
 	this->_board[srcRow][srcCol] = nullptr;
@@ -40,16 +46,21 @@ void Player::makeMove(std::tuple<int,int,int,int>positions)
 		new_pos[1] = dstCol;
 		temp->setPos(new_pos);
 	}
-
+	return eatenPiece;
 }
 
-void Player::undoMove(std::tuple<int, int, int, int>positions)
+void Player::undoMove(std::tuple<int, int, int, int>positions, std::tuple<bool, Piece*> eatenPiece)
 {
 	int srcRow, srcCol, dstRow, dstCol;
+	bool isEaten;
+	Piece* eatenPiecePtr;
 	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
+	std::tie(isEaten, eatenPiecePtr) = eatenPiece;
 	Piece* temp1 = this->_board[dstRow][dstCol];
 	this->_board[srcRow][srcCol] = temp1;
-	this->_board[dstRow][dstCol] = nullptr;
+	if(!isEaten)
+		this->_board[dstRow][dstCol] = nullptr;
+	else this->_board[dstRow][dstCol] = eatenPiecePtr;
 
 	if (dynamic_cast<King*>(this->_board[dstRow][dstCol]) != nullptr)
 	{
@@ -87,16 +98,17 @@ error_level_code Player::isValidCMD(std::tuple<int, int, int, int> positions)
 	}
 	else   //TODO: add check to check and mate
 	{
-		this->makeMove(positions);
+		std::tuple<bool, Piece*> eatenPiece;
+		eatenPiece = this->makeMove(positions);
 		
 		if (!this->_king->isChecked(this->_board))
 		{
-			this->undoMove(positions);
+			this->undoMove(positions, eatenPiece);
 			return valid;
 		}
 		else
 		{
-			this->undoMove(positions);
+			this->undoMove(positions, eatenPiece);
 			return invalid_make_check;
 		}
 	}
