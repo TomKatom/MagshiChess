@@ -54,10 +54,15 @@ private:
 
 public:
 
-	Pipe()
+	Pipe(bool change)
 	{
-		// Prepare the pipe name
-		strPipeName = (LPTSTR)TEXT("\\\\.\\pipe\\chessPipe");
+		if (change) {
+			strPipeName = (LPTSTR)TEXT("\\\\.\\pipe\\changePipe");
+		}
+		else {
+			// Prepare the pipe name
+			strPipeName = (LPTSTR)TEXT("\\\\.\\pipe\\chessPipe");
+		}
 
 	}
 

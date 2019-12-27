@@ -2,7 +2,7 @@
 #include "PipeInputOperations.h"
 
 //c'tor
-Game::Game(std::string& startingBoard, Pipe& p)
+Game::Game(std::string& startingBoard, Pipe& p) : _p(p)
 {
 	std::string revreseBoard = startingBoard;
 	reverse(revreseBoard.begin(), revreseBoard.end() );
@@ -10,7 +10,6 @@ Game::Game(std::string& startingBoard, Pipe& p)
 	this->_whitePlayer = new Player(Color::white, revreseBoard);
 	this->_blackPlayer = new Player(Color::black, revreseBoard);
 	this->_currentPlayerTurn = Color::white;
-	this->_p = p;
 }
 
 //d'tor
