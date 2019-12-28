@@ -62,8 +62,8 @@ void Game::playTurn(std::string& messageFromGraphics)
 							curr = this->_whitePlayer->getBoard()[i][j];
 							for (int k = 0; k < 8 and !notMate; k++) {
 								for (int l = 0; l < 8 and !notMate; l++) {
-									if (this->_whitePlayer->getBoard()[k][l] != curr and curr != nullptr) {
-										if (this->_whitePlayer->isValidCMD(std::tuple<int, int, int, int>(i, j, k, l))) {
+									if (this->_whitePlayer->getBoard()[k][l] != curr and curr != nullptr and curr->getColor() == Color::black and (this->_whitePlayer->getBoard()[k][l] == nullptr or this->_whitePlayer->getBoard()[k][l]->getColor() == Color::white)) {
+										if (curr->validMove(this->_whitePlayer->getBoard(), std::tuple<int,int,int,int>(i,j,k,l))) {
 											eaten = this->_whitePlayer->makeMove(std::tuple<int, int, int, int>(i, j, k, l));
 											if (!this->_blackPlayer->getKing()->isChecked(this->_whitePlayer->getBoard())) {
 												notMate = true;
