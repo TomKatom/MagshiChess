@@ -29,23 +29,25 @@ std::tuple<bool, Piece*> Player::makeMove(std::tuple<int,int,int,int>positions)
 	std::tuple<bool, Piece*> eatenPiece;
 	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
 
+	if (dynamic_cast<King*>(this->_board[srcRow][srcCol]) != nullptr)
+	{
+		King* temp = dynamic_cast<King*>(this->_board[srcRow][srcCol]);
+		int* new_pos = new int[2];
+		new_pos[0] = dstRow;
+		new_pos[1] = dstCol;
+		temp->setPos(new_pos);
+		delete[] new_pos;
+	}
+
 	if (this->_board[dstRow][dstCol] == nullptr)
 		eatenPiece = std::make_tuple(false, nullptr);
 	else eatenPiece = std::make_tuple(true, this->_board[dstRow][dstCol]);
-	
+
 	Piece* temp = this->_board[srcRow][srcCol];
 	this->_board[dstRow][dstCol] = temp;
 	this->_board[srcRow][srcCol] = nullptr;
 
 
-	if (dynamic_cast<King*>(this->_board[dstRow][dstCol]) != nullptr)
-	{
-		King* temp = dynamic_cast<King*>(this->_board[dstRow][dstCol]);
-		int* new_pos = new int[2];
-		new_pos[0] = dstRow;
-		new_pos[1] = dstCol;
-		temp->setPos(new_pos);
-	}
 	return eatenPiece;
 }
 
@@ -58,13 +60,13 @@ void Player::undoMove(std::tuple<int, int, int, int>positions, std::tuple<bool, 
 	std::tie(isEaten, eatenPiecePtr) = eatenPiece;
 	Piece* temp1 = this->_board[dstRow][dstCol];
 	this->_board[srcRow][srcCol] = temp1;
-	if(!isEaten)
+	if (!isEaten)
 		this->_board[dstRow][dstCol] = nullptr;
 	else this->_board[dstRow][dstCol] = eatenPiecePtr;
 
-	if (dynamic_cast<King*>(this->_board[dstRow][dstCol]) != nullptr)
+	if (dynamic_cast<King*>(this->_board[srcRow][srcCol]) != nullptr)
 	{
-		King* temp = dynamic_cast<King*>(this->_board[dstRow][dstCol]);
+		King* temp = dynamic_cast<King*>(this->_board[srcRow][srcCol]);
 		int* new_pos = new int[2];
 		new_pos[0] = srcRow;
 		new_pos[1] = srcCol;
