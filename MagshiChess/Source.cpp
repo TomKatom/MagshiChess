@@ -20,11 +20,12 @@ void check_pieces()
 	std::string str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
 	std::string str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 	//ayer playerPl(white);
-	Pipe p;
-	bool isConnect = p.connect();
-
+	Pipe p(false);
+	Pipe change(true);
+	bool isConnectP = p.connect();
+	bool isConnectChange = change.connect();
 	string ans;
-	while (!isConnect)
+	while (!isConnectP && isConnectChange)
 	{
 		cout << "cant connect to graphics" << endl;
 		cout << "Do you try to connect again or exit? (0-try again, 1-exit)" << endl;
@@ -34,7 +35,8 @@ void check_pieces()
 		{
 			cout << "trying connect again.." << endl;
 			Sleep(5000);
-			isConnect = p.connect();
+			isConnectP = p.connect();
+			isConnectChange = change.connect();
 		}
 		else
 		{
@@ -54,7 +56,7 @@ void check_pieces()
 
 	// get message from graphics
 	string msgFromGraphics = p.getMessageFromGraphics();
-	Game g(str4game, p);
+	Game g(str4game, p, change);
 
 	while (msgFromGraphics != "quit")
 	{
