@@ -42,7 +42,7 @@ std::tuple<bool, Piece*> Player::makeMove(std::tuple<int,int,int,int>positions)
 	if (this->_board[dstRow][dstCol] == nullptr)
 		eatenPiece = std::make_tuple(false, nullptr);
 	else eatenPiece = std::make_tuple(true, this->_board[dstRow][dstCol]);
-	
+
 	Piece* temp = this->_board[srcRow][srcCol];
 	this->_board[dstRow][dstCol] = temp;
 	this->_board[srcRow][srcCol] = nullptr;
@@ -60,7 +60,7 @@ void Player::undoMove(std::tuple<int, int, int, int>positions, std::tuple<bool, 
 	std::tie(isEaten, eatenPiecePtr) = eatenPiece;
 	Piece* temp1 = this->_board[dstRow][dstCol];
 	this->_board[srcRow][srcCol] = temp1;
-	if(!isEaten)
+	if (!isEaten)
 		this->_board[dstRow][dstCol] = nullptr;
 	else this->_board[dstRow][dstCol] = eatenPiecePtr;
 
@@ -73,6 +73,7 @@ void Player::undoMove(std::tuple<int, int, int, int>positions, std::tuple<bool, 
 		temp->setPos(new_pos);
 	}
 }
+
 error_level_code Player::isValidCMD(std::tuple<int, int, int, int> positions) 
 {
 	int srcRow, srcCol, dstRow, dstCol;

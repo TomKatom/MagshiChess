@@ -10,6 +10,7 @@ public:
 	void playTurn(std::string& getMessageFromGraphics);
 
 private:
+	bool isValidCode(error_level_code e) const;
 	Pipe _p;
 	Pipe _change;
 	Color _currentPlayerTurn;
