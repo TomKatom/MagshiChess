@@ -34,15 +34,14 @@ void Game::playTurn(std::string& messageFromGraphics)
 	auto positions = PipeInputOperations::moveToPos(messageFromGraphics);
 	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
 	bool choose_white = false;
-
-	bool was_invalid = false;
 	bool choose_black = false;
 	string result = "";
 	string msg;
 	Piece* curr;
 	bool notMate = false;
+	Player* checkedPlayer = nullptr;
 	bool mate = false;
-	std::tuple<bool, Piece*> eaten, eaten2;
+	std::tuple<bool, Piece*> eaten;
 	if (this->_currentPlayerTurn == Color::black)
 	{
 		move_code = this->_blackPlayer->isValidCMD(positions);
@@ -66,58 +65,31 @@ void Game::playTurn(std::string& messageFromGraphics)
 		else this->_currentPlayerTurn = Color::white;
 
 		if (this->_blackPlayer->getKing()->isChecked(this->_blackPlayer->getBoard()))
-		{
-			move_code = valid_check;
-			for (int i = 0; i < 8 and !notMate; i++) {
-				for (int j = 0; j < 8 and !notMate; j++) {
-					curr = this->_blackPlayer->getBoard()[i][j];
-					for (int k = 0; k < 8 and !notMate; k++) {
-						for (int l = 0; l < 8 and !notMate; l++) {
-							if (this->_blackPlayer->getBoard()[k][l] != curr and curr != nullptr and curr->getColor() == Color::black and (this->_whitePlayer->getBoard()[k][l] == nullptr or this->_whitePlayer->getBoard()[k][l]->getColor() == Color::white)) {
-								if (isValidCode(this->_blackPlayer->isValidCMD(std::make_tuple(i, j, k, l)))) {
-									eaten = this->_blackPlayer->makeMove(std::tuple<int, int, int, int>(i, j, k, l));
-									if (!this->_blackPlayer->getKing()->isChecked(this->_blackPlayer->getBoard())) {
-										notMate = true;
-										mate = false;
-									}
-									else {
-										mate = true;
-									}
-									this->_blackPlayer->undoMove(std::make_tuple(i, j, k, l), eaten);
-								}
-								else mate = true;
-							}
-						}
-					}
-				}
-			}
+			checkedPlayer = this->_blackPlayer;
 
-			if (mate) {
-				move_code = check_mate;
-				strcpy(msgToGraphics, "mate black");
-				this->_change.sendMessageToGraphics(msgToGraphics);
-				//_exit(0);
-			}
-		}
 		else if (this->_whitePlayer->getKing()->isChecked(this->_whitePlayer->getBoard()))
+			checkedPlayer = this->_whitePlayer;
+
+		if (checkedPlayer != nullptr)
 		{
+
 			move_code = valid_check;
 			for (int i = 0; i < 8 and !notMate; i++) {
 				for (int j = 0; j < 8 and !notMate; j++) {
-					curr = this->_whitePlayer->getBoard()[i][j];
+					curr = checkedPlayer->getBoard()[i][j];
 					for (int k = 0; k < 8 and !notMate; k++) {
 						for (int l = 0; l < 8 and !notMate; l++) {
-							if (this->_whitePlayer->getBoard()[k][l] != curr and this->_blackPlayer->getBoard() != nullptr and curr != nullptr) {
-								if ( isValidCode(this->_whitePlayer->isValidCMD(std::make_tuple(i, j, k, l)))) {
-									eaten = this->_whitePlayer->makeMove(std::make_tuple(i, j, k, l));
-									if (!this->_whitePlayer->getKing()->isChecked(this->_whitePlayer->getBoard())) {
+							if (checkedPlayer->getBoard()[k][l] != curr and curr != nullptr and curr->getColor() == checkedPlayer->getColor()) {
+								if (isValidCode(checkedPlayer->isValidCMD(std::make_tuple(i, j, k, l)))) {
+									eaten = checkedPlayer->makeMove(std::tuple<int, int, int, int>(i, j, k, l));
+									if (!checkedPlayer->getKing()->isChecked(checkedPlayer->getBoard())) {
 										notMate = true;
 										mate = false;
 									}
 									else {
 										mate = true;
 									}
-									this->_whitePlayer->undoMove(std::tuple<int, int, int, int>(i, j, k, l), eaten);
+									checkedPlayer->undoMove(std::make_tuple(i, j, k, l), eaten);
 								}
 								else mate = true;
 							}
@@ -128,19 +100,23 @@ void Game::playTurn(std::string& messageFromGraphics)
 
 			if (mate) {
 				move_code = check_mate;
-				strcpy(msgToGraphics, "mate white");
+				if(checkedPlayer->getColor() == Color::black)
+					strcpy(msgToGraphics, "mate black");
+				else 
+					strcpy(msgToGraphics, "mate white");
 				this->_change.sendMessageToGraphics(msgToGraphics);
 				//_exit(0);
 			}
 		}
+
 	}
-			
-	if (this->_whitePlayer->getBoard()[dstRow][dstCol]!= nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'P' and dstRow == 7) {
-		choose_white = true;
-	}
-	else if (this->_whitePlayer->getBoard()[dstRow][dstCol]!= nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'p' and dstRow == 0) {
-		choose_black = true;
-	}
+
+		if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'P' and dstRow == 7) {
+			choose_white = true;
+		}
+		else if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'p' and dstRow == 0) {
+			choose_black = true;
+		}
 
 
 		msgToGraphics[0] = (char)(move_code + '0');
@@ -226,5 +202,6 @@ void Game::playTurn(std::string& messageFromGraphics)
 			strcpy(msgToGraphics, msg.c_str());
 			this->_change.sendMessageToGraphics(msgToGraphics);
 		}
+	
 }
 
