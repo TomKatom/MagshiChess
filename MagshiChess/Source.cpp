@@ -65,7 +65,10 @@ void check_pieces()
 
 		// YOUR CODE
 		//strcpy_s(msgToGraphics, player.makeMove(msgFromGraphics)); // msgToGraphics should contain the result of the operation
-		g.playTurn(msgFromGraphics);
+//		try {
+			g.playTurn(msgFromGraphics);
+
+		
 
 		// return result to graphics		
 		//p.sendMessageToGraphics(msgToGraphics);

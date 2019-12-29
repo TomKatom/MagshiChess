@@ -73,3 +73,4 @@ bool King::isChecked(Piece*** board)
 	}
 	return false;
 }
+
