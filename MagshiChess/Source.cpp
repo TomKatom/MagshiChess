@@ -47,8 +47,11 @@ void chatPipeListener(sf::TcpSocket* sock, Pipe chatPipe) {
 int main()
 {
 	srand(time_t(NULL));
-	std::string str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
-	std::string str4game ="rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
+	//std::string str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";  //white - check
+	//std::string str4game ="rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
+
+	std::string str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";  //black - check
+	std::string str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbKqbnr";
 	//ayer playerPl(white);
 	Pipe p(0);
 	Pipe change(1);
