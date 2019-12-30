@@ -1,5 +1,4 @@
 #include "Player.h"
-
 Player::Player(Color c, std::string startingBoard) //c'tor
 {
 	this->_color = c;

@@ -4,17 +4,17 @@
 #include <thread>
 #include <vector>
 
-#define WAIT_MSG "wait"
-#define CONNECT_MSG "connect"
-#define MAX_SIZE 1024
+#define WAIT_MSG "Wait"
+#define CONNECT_MSG "Connect"
+
 
 void forward_msg(sf::TcpSocket* sock1, sf::TcpSocket* sock2)
 {
-	char data[MAX_SIZE];
+	char data[10240];
 	std::size_t received;
 	while (true)
 	{
-		if (sock1->receive(data, MAX_SIZE, received) != sf::Socket::Done)
+		if (sock1->receive(data, 10240, received) != sf::Socket::Done) 
 		{
 
 		}
