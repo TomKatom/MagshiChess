@@ -17,11 +17,13 @@ namespace chessGraphics
 
     public partial class Form1 : Form
     {
+        private readonly object pipeLock = new object();
         private Square srcSquare;
         private Square dstSquare;
 
         private pipe enginePipe;
         private pipe changePipe;
+        private pipe chatPipe;
         Button[,] matBoard;
 
         bool isCurPlWhite = true;
@@ -39,6 +41,7 @@ namespace chessGraphics
         {
             enginePipe.connect();
             changePipe.connect();
+            chatPipe.connect();
             Invoke((MethodInvoker)delegate {  
 
                 lblWaiting.Visible = false;
@@ -68,10 +71,12 @@ namespace chessGraphics
 
         Thread connectionThread;
         Thread changePipeThread;
+        Thread chatPipeThread;
         private void Form1_Load(object sender, EventArgs e)
         {
             enginePipe = new pipe("chessPipe");
             changePipe = new pipe("changePipe");
+            chatPipe = new pipe("chatPipe");
             //this.Show();
             
             //MessageBox.Show("Press OK to start waiting for engine to connect...");
@@ -81,6 +86,7 @@ namespace chessGraphics
             changePipeThread = new Thread(changePipeHandler);
             changePipeThread.Start();
             changePipeThread.IsBackground = true;
+
             //initForm();
         
         }
@@ -389,6 +395,28 @@ namespace chessGraphics
                             return;
                         });
                     }
+                        else if (m.StartsWith("chat"))
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            this.chatBox.AppendText("Opponent: " + m.Substring(5));
+                            this.chatBox.AppendText(Environment.NewLine);
+                        });
+                    }
+                        else if (m.StartsWith("wait"))
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            this.wait.Visible = true;
+                        });
+                    }
+                        else if (m.StartsWith("connected"))
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            this.wait.Visible = false;
+                        });
+                    }
                     }
                     catch
                     {
@@ -413,6 +441,10 @@ namespace chessGraphics
             this.chatBox.AppendText(Environment.NewLine);
             msg = this.msgBox.Text;
             this.msgBox.Text = "";
+            lock (pipeLock)
+            {
+                this.chatPipe.sendEngineMove("chat " + msg);
+            }
         }
         private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
@@ -424,7 +456,14 @@ namespace chessGraphics
                 this.chatBox.AppendText(Environment.NewLine);
                 msg = this.msgBox.Text;
                 this.msgBox.Text = "";
+                this.chatPipe.sendEngineMove("chat " + msg);
             }
+        }
+
+        private void label35_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
+

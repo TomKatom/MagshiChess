@@ -72,6 +72,7 @@
             this.msgBox = new System.Windows.Forms.TextBox();
             this.sendBtn = new System.Windows.Forms.Button();
             this.chatBox = new System.Windows.Forms.RichTextBox();
+            this.wait = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnBoard
@@ -523,11 +524,25 @@
             this.chatBox.TabIndex = 53;
             this.chatBox.Text = "";
             // 
+            // wait
+            // 
+            this.wait.AutoSize = true;
+            this.wait.Font = new System.Drawing.Font("Arial Narrow", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.wait.ForeColor = System.Drawing.Color.Red;
+            this.wait.Location = new System.Drawing.Point(27, 226);
+            this.wait.Name = "wait";
+            this.wait.Size = new System.Drawing.Size(582, 57);
+            this.wait.TabIndex = 54;
+            this.wait.Text = "Waiting for opponent to join...";
+            this.wait.Visible = false;
+            this.wait.Click += new System.EventHandler(this.label35_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1084, 601);
+            this.Controls.Add(this.wait);
             this.Controls.Add(this.chatBox);
             this.Controls.Add(this.sendBtn);
             this.Controls.Add(this.msgBox);
@@ -626,6 +641,7 @@
         private System.Windows.Forms.TextBox msgBox;
         private System.Windows.Forms.Button sendBtn;
         private System.Windows.Forms.RichTextBox chatBox;
+        private System.Windows.Forms.Label wait;
     }
 }
 
