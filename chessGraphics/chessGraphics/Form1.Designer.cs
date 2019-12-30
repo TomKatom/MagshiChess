@@ -69,6 +69,9 @@
             this.label32 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
+            this.msgBox = new System.Windows.Forms.TextBox();
+            this.sendBtn = new System.Windows.Forms.Button();
+            this.chatBox = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // btnBoard
@@ -153,7 +156,7 @@
             this.lblWaiting.AutoSize = true;
             this.lblWaiting.Font = new System.Drawing.Font("Arial Narrow", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblWaiting.ForeColor = System.Drawing.Color.Red;
-            this.lblWaiting.Location = new System.Drawing.Point(221, 218);
+            this.lblWaiting.Location = new System.Drawing.Point(27, 226);
             this.lblWaiting.Name = "lblWaiting";
             this.lblWaiting.Size = new System.Drawing.Size(611, 57);
             this.lblWaiting.TabIndex = 9;
@@ -491,11 +494,43 @@
             this.label34.TabIndex = 42;
             this.label34.Text = "h";
             // 
+            // msgBox
+            // 
+            this.msgBox.BackColor = System.Drawing.Color.GhostWhite;
+            this.msgBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.msgBox.Location = new System.Drawing.Point(644, 463);
+            this.msgBox.Name = "msgBox";
+            this.msgBox.Size = new System.Drawing.Size(374, 26);
+            this.msgBox.TabIndex = 51;
+            // 
+            // sendBtn
+            // 
+            this.sendBtn.Location = new System.Drawing.Point(1015, 463);
+            this.sendBtn.Name = "sendBtn";
+            this.sendBtn.Size = new System.Drawing.Size(57, 26);
+            this.sendBtn.TabIndex = 52;
+            this.sendBtn.Text = "Send";
+            this.sendBtn.UseVisualStyleBackColor = true;
+            this.sendBtn.Click += new System.EventHandler(this.sendBtn_Click);
+            // 
+            // chatBox
+            // 
+            this.chatBox.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.chatBox.Location = new System.Drawing.Point(644, 226);
+            this.chatBox.Name = "chatBox";
+            this.chatBox.ReadOnly = true;
+            this.chatBox.Size = new System.Drawing.Size(428, 237);
+            this.chatBox.TabIndex = 53;
+            this.chatBox.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1084, 601);
+            this.Controls.Add(this.chatBox);
+            this.Controls.Add(this.sendBtn);
+            this.Controls.Add(this.msgBox);
             this.Controls.Add(this.label27);
             this.Controls.Add(this.label28);
             this.Controls.Add(this.label29);
@@ -588,6 +623,9 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.TextBox msgBox;
+        private System.Windows.Forms.Button sendBtn;
+        private System.Windows.Forms.RichTextBox chatBox;
     }
 }
 

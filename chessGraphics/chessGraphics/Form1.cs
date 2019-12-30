@@ -9,8 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 
+
 namespace chessGraphics
 {
+
+
+
     public partial class Form1 : Form
     {
         private Square srcSquare;
@@ -30,6 +34,7 @@ namespace chessGraphics
             InitializeComponent();
         }
 
+        
         private void initForm()
         {
             enginePipe.connect();
@@ -39,8 +44,9 @@ namespace chessGraphics
                 lblWaiting.Visible = false;
                 lblCurrentPlayer.Visible = true;
                 label1.Visible = true;
-
-                        
+                chatBox.SelectionStart = chatBox.Text.Length;
+                chatBox.ScrollToCaret();
+                this.msgBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
 
                 string s = enginePipe.getEngineMessage();
 
@@ -398,6 +404,27 @@ namespace chessGraphics
             enginePipe.sendEngineMove("quit");
             enginePipe.close();
             changePipe.close();
+        }
+
+        private void sendBtn_Click(object sender, EventArgs e)
+        {
+            string msg;
+            this.chatBox.AppendText("You: " + this.msgBox.Text);
+            this.chatBox.AppendText(Environment.NewLine);
+            msg = this.msgBox.Text;
+            this.msgBox.Text = "";
+        }
+        private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+
+            {
+                string msg;
+                this.chatBox.AppendText("You: " + this.msgBox.Text);
+                this.chatBox.AppendText(Environment.NewLine);
+                msg = this.msgBox.Text;
+                this.msgBox.Text = "";
+            }
         }
     }
 }
