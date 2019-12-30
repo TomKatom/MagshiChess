@@ -17,7 +17,6 @@ using std::cout;
 using std::endl;
 using std::string;
 
-
 void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe)
 {
 	char data[10240] = { 0 };
@@ -49,7 +48,7 @@ int main()
 {
 	srand(time_t(NULL));
 	std::string str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
-	std::string str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
+	std::string str4game ="rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 	//ayer playerPl(white);
 	Pipe p(0);
 	Pipe change(1);
