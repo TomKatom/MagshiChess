@@ -15,6 +15,7 @@ public:
 	std::tuple<bool, Piece*> makeMove(std::tuple<int, int, int, int> positions);
 	void undoMove(std::tuple<int, int, int, int>positions, std::tuple<bool, Piece*> eatenPiece);
 	King* getKing();
+	Color getColor() const;
 	Piece*** getBoard();
 	error_level_code isValidCMD(std::tuple<int, int, int, int> positions);
 	bool isChecked(Piece*** board, std::tuple<int, int, int, int> positions);

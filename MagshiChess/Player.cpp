@@ -74,6 +74,10 @@ void Player::undoMove(std::tuple<int, int, int, int>positions, std::tuple<bool, 
 	}
 }
 
+Color Player::getColor() const
+{
+	return this->_color;
+}
 error_level_code Player::isValidCMD(std::tuple<int, int, int, int> positions) 
 {
 	int srcRow, srcCol, dstRow, dstCol;
