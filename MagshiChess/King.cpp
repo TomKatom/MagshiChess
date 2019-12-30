@@ -9,17 +9,9 @@ Setting the pieceChar according to the color of the piece
 */
 	this->_moved = false;
 	this->_pos = new int[2];
-	if (color == Color::white)
-	{
-		this->_pos[0] = 0;
-		this->_pos[1] = 4;
-	}
-	else
-	{
-		this->_pos[0] = 7;
-		this->_pos[1] = 4;
-	}
-		
+
+	this->_pos[0] = 0;
+	this->_pos[1] = 4;
 		
 	switch (color) {
 	case Color::white:

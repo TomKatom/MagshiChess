@@ -29,12 +29,12 @@ bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 
 	if (board[dstRow][dstCol] != nullptr && board[dstRow][dstCol]->getColor() != this->_color)  //when eating enemy piece
 	{			
-		if ((srcRow - dstRow) != MOVED_PAWN_MOVING_RANGE)
+		if ((dstRow - srcRow) != MOVED_PAWN_MOVING_RANGE)
 		{
 			return false;
 		}
 		else{
-			if (std::abs(srcCol - dstCol) == PAWN_EATING_MOVE_RANGE) {
+			if (std::abs(dstRow - srcRow) == PAWN_EATING_MOVE_RANGE) {
 				if (!this->_moved) this->_moved = true;  //update bool var _moved
 				return true;
 			}
@@ -53,14 +53,14 @@ bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 		{
 			if (this->_moved) //piece moved already
 			{
-				if ((srcRow - dstRow) != MOVED_PAWN_MOVING_RANGE)
+				if ((dstRow - srcRow) != MOVED_PAWN_MOVING_RANGE)
 					return false;
 				else
 					return false;
 			}
 			else  //first step
 			{
-				if ((srcRow - dstRow) < MOVED_PAWN_MOVING_RANGE || (srcRow - dstRow) > UNMOVED_PAWN_MOVING_RANGE)
+				if ((dstRow - srcRow) < MOVED_PAWN_MOVING_RANGE || (dstRow - srcRow) > UNMOVED_PAWN_MOVING_RANGE)
 					return false;
 				else
 				{
