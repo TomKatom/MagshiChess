@@ -6,7 +6,20 @@
 
 #define WAIT_MSG "wait"
 #define CONNECT_MSG "connect"
+#define DISCONNECT_MSG "disconnect"
 #define MAX_SIZE 1024
+#define WHITE_STARTING_BOARD ""
+
+int sendBoards(sf::TcpSocket* sock1, sf::TcpSocket* sock2)
+{
+	int send_board_code = 0;
+	
+}
+
+void sendDisconnectMsg(sf::TcpSocket* sock)
+{
+	sock->send(DISCONNECT_MSG, strlen(DISCONNECT_MSG));
+}
 
 void forward_msg(sf::TcpSocket* sock1, sf::TcpSocket* sock2)
 {
@@ -16,13 +29,19 @@ void forward_msg(sf::TcpSocket* sock1, sf::TcpSocket* sock2)
 	{
 		if (sock1->receive(data, MAX_SIZE, received) != sf::Socket::Done)
 		{
-
+			sendDisconnectMsg(sock2);
+			throw std::exception("Player1 disconnected");
 		}
-		std::cout << "Received: " << std::string(data) << std::endl;
-		if (sock2->send(data, strlen(data)) != sf::Socket::Done){
-
+		else
+		{
+			std::cout << "Received: " << std::string(data) << std::endl;
+			if (sock2->send(data, strlen(data)) != sf::Socket::Done) 
+			{
+				sendDisconnectMsg(sock1);
+				throw std::exception("Player2 disconnected");
+			}
+			std::cout << "Sending: " << std::string(data) << std::endl;
 		}
-		std::cout << "Sending: " << std::string(data) << std::endl;
 	}
 }
 
@@ -30,8 +49,15 @@ void matchThread(sf::TcpSocket* sock1, sf::TcpSocket* sock2)
 {
 	while (true) 
 	{
-		std::thread(forward_msg, sock1, sock2).detach();
-		std::thread(forward_msg, sock2, sock1).detach();
+		try {
+			std::thread(forward_msg, sock1, sock2).detach();
+			std::thread(forward_msg, sock2, sock1).detach();
+		}
+		catch (std::exception & e)
+		{
+			break;
+		}
+
 	}
 }
 
@@ -66,8 +92,14 @@ int main()
 		if (client1->send(CONNECT_MSG, strlen(CONNECT_MSG)) != sf::Socket::Done)  //Send connect msg to first client
 			continue;
 		
-		if (client1->send(CONNECT_MSG, strlen(CONNECT_MSG)) != sf::Socket::Done)   //Send connect msg to second client
+		if (client2->send(CONNECT_MSG, strlen(CONNECT_MSG)) != sf::Socket::Done)   //Send connect msg to second client
+		{
+			sendDisconnectMsg(client1);
 			continue;
+		}
+			
+
+		sendBoards(client1, client2);
 
 		match = new std::thread(matchThread, client1, client2);
 		match->detach();
