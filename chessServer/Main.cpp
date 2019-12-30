@@ -12,8 +12,12 @@
 
 int sendBoards(sf::TcpSocket* sock1, sf::TcpSocket* sock2)
 {
-	int send_board_code = 0;
-	
+	const char* white_gui_board = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
+	const char* white_array_board = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
+	const char* black_gui_board = "";
+	const char* black_array_board = "";
+	int sent_board_code = 0;
+	return sent_board_code;
 }
 
 void sendDisconnectMsg(sf::TcpSocket* sock)
@@ -57,7 +61,6 @@ void matchThread(sf::TcpSocket* sock1, sf::TcpSocket* sock2)
 		{
 			break;
 		}
-
 	}
 }
 
