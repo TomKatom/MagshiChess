@@ -53,9 +53,10 @@ bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 		{
 			if (this->_moved) //piece moved already
 			{
-				if ((srcRow - dstRow) == MOVED_PAWN_MOVING_RANGE)
-					return true;
-				else return false;
+				if ((srcRow - dstRow) != MOVED_PAWN_MOVING_RANGE)
+					return false;
+				else
+					return false;
 			}
 			else  //first step
 			{
