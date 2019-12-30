@@ -20,25 +20,6 @@
 #pragma comment(lib,"opengl32.lib") 
 #pragma comment(lib,"glu32.lib") 
 */
-std::string getMsgFromSocket(sf::TcpSocket* sock) {
-	char data[1024];
-	std::size_t received;
-	if (sock->receive(data, 1024, received) != sf::Socket::Done)
-	{
-		// error...
-	}
-	std::cout << "Received: " << data;
-	return std::string(data);
-}
-
-void sendMsgToSocket(sf::TcpSocket* sock, std::future<std::string>& msg) {
-	std::cout << "Sending: " << msg.get() << std::endl;
-	if (sock->send(msg.get().c_str(), 10240) != sf::Socket::Done)
-	{
-		// error...
-	}
-
-}
 
 void forward_msg(sf::TcpSocket* sock1, sf::TcpSocket* sock2) {
 	char data[10240];
@@ -47,9 +28,11 @@ void forward_msg(sf::TcpSocket* sock1, sf::TcpSocket* sock2) {
 		if (sock1->receive(data, 10240, received) != sf::Socket::Done) {
 
 		}
-		if (sock2->send(data, 10240) != sf::Socket::Done){
+		std::cout << "Received: " << std::string(data) << std::endl;
+		if (sock2->send(data, strlen(data)) != sf::Socket::Done){
 
 		}
+		std::cout << "Sending: " << std::string(data) << std::endl;
 	}
 }
 
@@ -77,14 +60,10 @@ int main() {
 		{
 			// error...
 		}
-		std::string wait = "Waiting for another client to join.";
-		client1->send(wait.c_str(), 1024);
 		if (listener.accept(*client2) != sf::Socket::Done)
 		{
 			// error...
 		}
-		wait = "Client Joined!";
-		client1->send(wait.c_str(), 1024);
 		match = new std::thread(matchThread, client1, client2);
 		match->detach();
 		threads.push_back(match);
