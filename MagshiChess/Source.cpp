@@ -22,7 +22,7 @@ using std::string;
 void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g)
 {
 	char data[10240] = { 0 };
-	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
+	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0, guiDstRow = 0, guiSrcRow = 0;
 	string msg = "";
 	string value = "";
 	std::size_t received;
@@ -38,13 +38,15 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 		} // move 1,1 3,3
 		if (msg.find("move") != string::npos) {
 			std::unique_lock<std::mutex> lock(*mu);
-			srcRow = 7 - (msg[5] - '0');
-			srcCol = msg[7] - '0';
+			srcRow = (msg[5] - '0');
+			guiSrcRow = 7 - srcRow;
+			srcCol = (msg[7] - '0');
 			dstRow = 7 - (msg[9] - '0');
+			guiDstRow = 7 - dstRow;
 			dstCol = (msg[11] - '0');
 			g->getPlayer()->makeMove(std::tuple<int, int, int, int>(srcRow, srcCol, dstRow, dstCol));
 			msg = "change ";
-			msg += (char)(srcRow + '0'); 
+			msg += (char)(guiSrcRow + '0'); 
 			msg += ','; 
 			msg += (char)(srcCol + '0'); 
 			msg += ' ';
@@ -53,7 +55,7 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			data[msg.length() + 1] = 0;
 			changePipe.sendMessageToGraphics(data);
 			msg = "change "; 
-			msg += (char)(dstRow + '0');
+			msg += (char)(guiDstRow-1 + '0');
 			msg += ',';
 			msg += (char)(dstCol + '0');
 			msg += ' ';
