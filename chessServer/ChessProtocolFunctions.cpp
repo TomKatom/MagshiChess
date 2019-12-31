@@ -66,3 +66,7 @@ char* ChessProtocol::convertPosToData(std::tuple<char*, int, int, int, int, char
 	return cstr; 
 	
 }
+
+bool ChessProtocol::isMoveCmd(char* data) {
+	return std::string(data).find("move") != std::string::npos;
+}
