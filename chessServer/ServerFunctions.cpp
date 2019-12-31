@@ -79,7 +79,7 @@ void ServerFunctions::forward_msg(sf::TcpSocket* sock1, sf::TcpSocket* sock2) //
 		}
 		else
 		{
-			if (!ChessProtocol::isMsgCmd(data))
+			if (ChessProtocol::isMoveCmd(data))
 				ChessProtocol::convertMoveCmd(data);
 			
 			if (sock2->send(data, strlen(data) + 1) != sf::Socket::Done)

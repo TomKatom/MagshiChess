@@ -116,7 +116,7 @@ int main()
 		}
 		return 0;
 	}
-	char msgToGraphics[1024];
+	char msgToGraphics[10240];
 	sock->connect("127.0.0.1", 5000);
 	chat.connect();
 	sock->receive(data, 10240, receieved);

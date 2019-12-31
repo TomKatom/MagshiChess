@@ -88,7 +88,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 										}
 										checkedPlayer->undoMove(std::make_tuple(i, j, k, l), eaten);
 									}
-									else mate = true;
+									else mate = false;
 								}
 							}
 						}
