@@ -120,7 +120,14 @@ void Game::playTurn(std::string& messageFromGraphics)
 			msgToGraphics[1] = 0;
 			this->_p.sendMessageToGraphics(msgToGraphics);
 			if (move_code == error_level_code::valid) {
-				msg = "move " + (char)(srcRow + '0') + ',' + (char)(srcCol + '0') + ' ' + (char)(dstRow + '0') + ',' + (char)(dstCol + '0');
+				msg = "move ";
+				msg += (char)(srcRow + '0');
+				msg += ',';
+				msg += (char)(srcCol + '0');
+				msg += ' ';
+				msg += (char)(dstRow + '0');
+				msg += ','; 
+				msg += (char)(dstCol + '0');
 				this->_sock->send(msg.c_str(), msg.length() + 1);
 			}
 			if (choose_white) {
@@ -207,6 +214,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 	else {
 		msgToGraphics[0] = (char)(2 + '0');
 		msgToGraphics[1] = 0;
+		_p.sendMessageToGraphics(msgToGraphics);
 	}
 	
 }
