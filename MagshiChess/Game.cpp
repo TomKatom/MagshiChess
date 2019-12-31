@@ -3,14 +3,16 @@
 #pragma warning(disable:4996)
 #include <thread>
 //c'tor
-Game::Game(std::string& startingBoard, Pipe& p, Pipe& change) : _p(p), _change(change)
+Game::Game(std::string& startingBoard, Pipe& p, Pipe& change, std::mutex* mu, sf::TcpSocket* sock) : _p(p), _change(change)
 {
 	std::string revreseBoard = startingBoard;
 	reverse(revreseBoard.begin(), revreseBoard.end() );
 
 	this->_whitePlayer = new Player(Color::white, revreseBoard);
 	this->_blackPlayer = new Player(Color::black, revreseBoard);
-	this->_currentPlayerTurn = Color::white;
+	this->_thisTurn = false;
+	this->_mu = mu;
+	this->_sock = sock;
 }
 
 //d'tor
@@ -18,6 +20,10 @@ Game::~Game()
 {
 	delete this->_whitePlayer;
 	delete this->_blackPlayer;
+}
+
+void Game::setCurrTurn(bool turn) {
+	this->_thisTurn = turn;
 }
 
 bool Game::isValidCode(error_level_code e) const
@@ -41,136 +47,132 @@ void Game::playTurn(std::string& messageFromGraphics)
 	Player* checkedPlayer = nullptr;
 	bool mate = false;
 	std::tuple<bool, Piece*> eaten;
-	if (this->_currentPlayerTurn == Color::black)
-	{
-		move_code = this->_blackPlayer->isValidCMD(positions);
-	}
-	else
-	{
-		move_code = this->_whitePlayer->isValidCMD(positions);
-	}
 
 	char msgToGraphics[1024];
 
-
-	if (isValidCode(move_code))
-	{
-		//TODO: change it when converting to multyplayer
-		this->_whitePlayer->makeMove(positions);
-		this->_blackPlayer->makeMove(positions);
-
-		if (this->_currentPlayerTurn == Color::white)
-			this->_currentPlayerTurn = Color::black;
-		else this->_currentPlayerTurn = Color::white;
-
-		if (this->_blackPlayer->getKing()->isChecked(this->_blackPlayer->getBoard()))
-			checkedPlayer = this->_blackPlayer;
-
-		else if (this->_whitePlayer->getKing()->isChecked(this->_whitePlayer->getBoard()))
-			checkedPlayer = this->_whitePlayer;
-
-		if (checkedPlayer != nullptr)
+	if (this->_thisTurn) {
+		move_code = this->_whitePlayer->isValidCMD(positions);
+		if (isValidCode(move_code))
 		{
+			std::unique_lock<std::mutex> lock(*_mu);
+			//TODO: change it when converting to multyplayer
+			this->_whitePlayer->makeMove(positions);
+			this->_blackPlayer->makeMove(positions);
 
-			move_code = valid_check;
-			for (int i = 0; i < 8 and !notMate; i++) {
-				for (int j = 0; j < 8 and !notMate; j++) {
-					curr = checkedPlayer->getBoard()[i][j];
-					for (int k = 0; k < 8 and !notMate; k++) {
-						for (int l = 0; l < 8 and !notMate; l++) {
-							if (checkedPlayer->getBoard()[k][l] != curr and curr != nullptr and curr->getColor() == checkedPlayer->getColor()) {
-								if (isValidCode(checkedPlayer->isValidCMD(std::make_tuple(i, j, k, l)))) {
-									eaten = checkedPlayer->makeMove(std::tuple<int, int, int, int>(i, j, k, l));
-									if (!checkedPlayer->getKing()->isChecked(checkedPlayer->getBoard())) {
-										notMate = true;
-										mate = false;
+			this->_thisTurn = false;
+
+			if (this->_blackPlayer->getKing()->isChecked(this->_blackPlayer->getBoard()))
+				checkedPlayer = this->_blackPlayer;
+
+			else if (this->_whitePlayer->getKing()->isChecked(this->_whitePlayer->getBoard()))
+				checkedPlayer = this->_whitePlayer;
+
+			if (checkedPlayer != nullptr)
+			{
+
+				move_code = valid_check;
+				for (int i = 0; i < 8 and !notMate; i++) {
+					for (int j = 0; j < 8 and !notMate; j++) {
+						curr = checkedPlayer->getBoard()[i][j];
+						for (int k = 0; k < 8 and !notMate; k++) {
+							for (int l = 0; l < 8 and !notMate; l++) {
+								if (checkedPlayer->getBoard()[k][l] != curr and curr != nullptr and curr->getColor() == checkedPlayer->getColor()) {
+									if (isValidCode(checkedPlayer->isValidCMD(std::make_tuple(i, j, k, l)))) {
+										eaten = checkedPlayer->makeMove(std::tuple<int, int, int, int>(i, j, k, l));
+										if (!checkedPlayer->getKing()->isChecked(checkedPlayer->getBoard())) {
+											notMate = true;
+											mate = false;
+										}
+										else {
+											mate = true;
+										}
+										checkedPlayer->undoMove(std::make_tuple(i, j, k, l), eaten);
 									}
-									else {
-										mate = true;
-									}
-									checkedPlayer->undoMove(std::make_tuple(i, j, k, l), eaten);
+									else mate = true;
 								}
-								else mate = true;
 							}
 						}
 					}
 				}
-			}
 
-			if (mate) {
-				move_code = check_mate;
-				if(checkedPlayer->getColor() == Color::black)
-					strcpy(msgToGraphics, "mate black");
-				else 
-					strcpy(msgToGraphics, "mate white");
-				this->_change.sendMessageToGraphics(msgToGraphics);
+				if (mate) {
+					move_code = check_mate;
+					if(checkedPlayer->getColor() == Color::black)
+						strcpy(msgToGraphics, "mate black");
+					else 
+						strcpy(msgToGraphics, "mate white");
+					this->_change.sendMessageToGraphics(msgToGraphics);
 				//_exit(0);
+				}
 			}
+
 		}
 
-	}
-
-		if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'P' and dstRow == 7) {
-			choose_white = true;
-		}
-		else if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'p' and dstRow == 0) {
-			choose_black = true;
-		}
-
-
-		msgToGraphics[0] = (char)(move_code + '0');
-		msgToGraphics[1] = 0;
-		this->_p.sendMessageToGraphics(msgToGraphics);
-		if (choose_white) {
-			result = "";
-			strcpy(msgToGraphics, "choice white");
-			this->_change.sendMessageToGraphics(msgToGraphics);
-			while (result == "") {
-				result = this->_p.getMessageFromGraphics();
+			if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'P' and dstRow == 7) {
+				choose_white = true;
 			}
-			switch (result[0]) {
-			case 'Q':
-				delete this->_blackPlayer->getBoard()[dstRow][dstCol];
-				this->_blackPlayer->getBoard()[dstRow][dstCol] = new Queen(Color::white);
-				delete this->_whitePlayer->getBoard()[dstRow][dstCol];
-				this->_whitePlayer->getBoard()[dstRow][dstCol] = new Queen(Color::white);
-				break;
-			case 'R':
-				delete this->_blackPlayer->getBoard()[dstRow][dstCol];
-				this->_blackPlayer->getBoard()[dstRow][dstCol] = new Rook(Color::white);
-				delete this->_whitePlayer->getBoard()[dstRow][dstCol];
-				this->_whitePlayer->getBoard()[dstRow][dstCol] = new Rook(Color::white);
-				break;
+			else if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'p' and dstRow == 0) {
+				choose_black = true;
+			}
 
-			case 'B':
-				delete this->_blackPlayer->getBoard()[dstRow][dstCol];
-				this->_blackPlayer->getBoard()[dstRow][dstCol] = new Bishop(Color::white);
-				delete this->_whitePlayer->getBoard()[dstRow][dstCol];
-				this->_whitePlayer->getBoard()[dstRow][dstCol] = new Bishop(Color::white);
-				break;
-			case 'N':
-				delete this->_blackPlayer->getBoard()[dstRow][dstCol];
-				this->_blackPlayer->getBoard()[dstRow][dstCol] = new Knight(Color::white);
-				delete this->_whitePlayer->getBoard()[dstRow][dstCol];
-				this->_whitePlayer->getBoard()[dstRow][dstCol] = new Knight(Color::white);
-				break;
+			
+			msgToGraphics[0] = (char)(move_code + '0');
+			msgToGraphics[1] = 0;
+			this->_p.sendMessageToGraphics(msgToGraphics);
+			if (move_code == error_level_code::valid) {
+				msg = "move " + (char)(srcRow + '0') + ',' + (char)(srcCol + '0') + ' ' + (char)(dstRow + '0') + ',' + (char)(dstCol + '0');
+				this->_sock->send(msg.c_str(), msg.length() + 1);
 			}
-		}
-		else if (choose_black) {
-			result = "";
-			strcpy(msgToGraphics, "choice black");
-			this->_change.sendMessageToGraphics(msgToGraphics);
-			while (result == "") {
-				result = this->_p.getMessageFromGraphics();
+			if (choose_white) {
+				result = "";
+				strcpy(msgToGraphics, "choice white");
+				this->_change.sendMessageToGraphics(msgToGraphics);
+				while (result == "") {
+					result = this->_p.getMessageFromGraphics();
+				}
+				switch (result[0]) {
+				case 'Q':
+					delete this->_blackPlayer->getBoard()[dstRow][dstCol];
+					this->_blackPlayer->getBoard()[dstRow][dstCol] = new Queen(Color::white);
+					delete this->_whitePlayer->getBoard()[dstRow][dstCol];
+					this->_whitePlayer->getBoard()[dstRow][dstCol] = new Queen(Color::white);
+					break;
+				case 'R':
+					delete this->_blackPlayer->getBoard()[dstRow][dstCol];
+					this->_blackPlayer->getBoard()[dstRow][dstCol] = new Rook(Color::white);
+					delete this->_whitePlayer->getBoard()[dstRow][dstCol];
+					this->_whitePlayer->getBoard()[dstRow][dstCol] = new Rook(Color::white);
+					break;
+	
+				case 'B':
+					delete this->_blackPlayer->getBoard()[dstRow][dstCol];
+					this->_blackPlayer->getBoard()[dstRow][dstCol] = new Bishop(Color::white);
+					delete this->_whitePlayer->getBoard()[dstRow][dstCol];
+					this->_whitePlayer->getBoard()[dstRow][dstCol] = new Bishop(Color::white);
+					break;
+				case 'N':
+					delete this->_blackPlayer->getBoard()[dstRow][dstCol];
+					this->_blackPlayer->getBoard()[dstRow][dstCol] = new Knight(Color::white);
+					delete this->_whitePlayer->getBoard()[dstRow][dstCol];
+					this->_whitePlayer->getBoard()[dstRow][dstCol] = new Knight(Color::white);
+					break;
+				}
 			}
-			switch (result[0]) {
-			case 'q':
-				delete this->_blackPlayer->getBoard()[dstRow][dstCol];
-				this->_blackPlayer->getBoard()[dstRow][dstCol] = new Queen(Color::black);
-				delete this->_whitePlayer->getBoard()[dstRow][dstCol];
-				this->_whitePlayer->getBoard()[dstRow][dstCol] = new Queen(Color::black);
-				break;
-			case 'r':
+			else if (choose_black) {
+				result = "";
+				strcpy(msgToGraphics, "choice black");
+				this->_change.sendMessageToGraphics(msgToGraphics);
+				while (result == "") {
+					result = this->_p.getMessageFromGraphics();
+				}
+				switch (result[0]) {
+				case 'q':
+					delete this->_blackPlayer->getBoard()[dstRow][dstCol];
+					this->_blackPlayer->getBoard()[dstRow][dstCol] = new Queen(Color::black);
+					delete this->_whitePlayer->getBoard()[dstRow][dstCol];
+					this->_whitePlayer->getBoard()[dstRow][dstCol] = new Queen(Color::black);
+					break;
+				case 'r':
 				delete this->_blackPlayer->getBoard()[dstRow][dstCol];
 				this->_blackPlayer->getBoard()[dstRow][dstCol] = new Rook(Color::black);
 				delete this->_whitePlayer->getBoard()[dstRow][dstCol];
@@ -201,6 +203,14 @@ void Game::playTurn(std::string& messageFromGraphics)
 			strcpy(msgToGraphics, msg.c_str());
 			this->_change.sendMessageToGraphics(msgToGraphics);
 		}
+		_mu->unlock();
+	}
+	else {
+		msgToGraphics[0] = (char)(2 + '0');
+		msgToGraphics[1] = 0;
+	}
 	
 }
-
+Player* Game::getPlayer() {
+	return this->_whitePlayer;
+}
