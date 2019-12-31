@@ -30,9 +30,8 @@ bool Game::isValidCode(error_level_code e) const
 void Game::playTurn(std::string& messageFromGraphics)
 {
 	error_level_code move_code;
-	int srcRow, srcCol, dstRow, dstCol;
 	auto positions = PipeInputOperations::moveToPos(messageFromGraphics);
-	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions;
 	bool choose_white = false;
 	bool choose_black = false;
 	string result = "";

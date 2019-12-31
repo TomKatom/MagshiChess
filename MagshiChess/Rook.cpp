@@ -21,9 +21,10 @@ Rook::~Rook() {
 }
 
 
-bool Rook::validMove(Piece*** board, std::tuple<int, int, int, int> positions) {
-	int srcRow, srcCol, dstRow, dstCol;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
+bool Rook::validMove(Piece*** board, std::tuple<int, int, int, int> positions) 
+{
+	auto [srcRow, srcCol, dstRow, dstCol] = positions;
+
 	if (srcCol == dstCol) {
 		if (srcRow < dstRow) {
 			for (int i = srcRow + 1; i < dstRow; i++) {

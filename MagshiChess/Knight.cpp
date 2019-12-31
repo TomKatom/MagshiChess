@@ -18,8 +18,8 @@ Knight::~Knight() {
 
 }
 bool Knight::validMove(Piece*** board,std::tuple<int, int, int, int> positions) {
-	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions;
+
 	if (dstCol - 2 == srcCol and dstRow - 1 == srcRow) { // Right Top Middle
 		return true;
 	}

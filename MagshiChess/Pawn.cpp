@@ -24,8 +24,8 @@ Pawn::~Pawn()
 
 bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 {
-	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions;
+
 
 	if (board[dstRow][dstCol] != nullptr && board[dstRow][dstCol]->getColor() != this->_color)  //when eating enemy piece
 	{			

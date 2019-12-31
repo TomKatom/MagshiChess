@@ -24,9 +24,8 @@ Piece*** Player::getBoard()
 }
 std::tuple<bool, Piece*> Player::makeMove(std::tuple<int,int,int,int>positions)
 {
-	int srcRow, srcCol, dstRow, dstCol;
 	std::tuple<bool, Piece*> eatenPiece;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions;
 
 	if (dynamic_cast<King*>(this->_board[srcRow][srcCol]) != nullptr)
 	{
@@ -52,11 +51,9 @@ std::tuple<bool, Piece*> Player::makeMove(std::tuple<int,int,int,int>positions)
 
 void Player::undoMove(std::tuple<int, int, int, int>positions, std::tuple<bool, Piece*> eatenPiece)
 {
-	int srcRow, srcCol, dstRow, dstCol;
-	bool isEaten;
-	Piece* eatenPiecePtr;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
-	std::tie(isEaten, eatenPiecePtr) = eatenPiece;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions;
+	auto [isEaten, eatenPiecePtr] = eatenPiece;
+
 	Piece* temp1 = this->_board[dstRow][dstCol];
 	this->_board[srcRow][srcCol] = temp1;
 	if (!isEaten)
@@ -79,9 +76,8 @@ Color Player::getColor() const
 }
 error_level_code Player::isValidCMD(std::tuple<int, int, int, int> positions) 
 {
-	int srcRow, srcCol, dstRow, dstCol;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
-	error_level_code response_code = valid; 
+	auto [srcRow, srcCol, dstRow, dstCol] = positions;
+	error_level_code response_code = valid;
 
 	//check error_level_code 2 - in src position there is no piece of curr player
 	if (this->_board[srcRow][srcCol] == nullptr || this->_board[srcRow][srcCol]->getColor() != this->_color)
@@ -123,8 +119,7 @@ error_level_code Player::isValidCMD(std::tuple<int, int, int, int> positions)
 
 bool Player::isChecked(Piece*** board, std::tuple<int, int, int, int> positions)
 {
-	int srcRow, srcCol, dstRow, dstCol;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions;
 	for (int row = 0; row < 8; row++)
 	{
 		for (int col = 0; col < 8; col++)

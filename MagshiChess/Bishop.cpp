@@ -20,8 +20,7 @@ Bishop::~Bishop() {
 
 }
 bool Bishop::validMove(Piece*** board, std::tuple<int, int, int, int> positions) {
-	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions;
 	if (dstRow - srcRow == dstCol - srcCol and dstCol > srcCol and dstRow > srcRow ) { // Top Right Diagnoal
 		for (int i = srcRow + 1, j = srcCol + 1; i < dstRow; i++, j++) {
 			if (board[i][j] != nullptr) {

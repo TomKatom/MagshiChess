@@ -12,7 +12,7 @@ Setting the pieceChar according to the color of the piece
 
 	this->_pos[0] = 0;
 	this->_pos[1] = 4;
-		
+	
 	switch (color) {
 	case Color::white:
 		this->_pieceChar = 'K';
@@ -41,8 +41,7 @@ void King::setPos(int* new_pos)
 
 bool King::validMove(Piece*** board, std::tuple<int, int, int, int> positions)
 {
-	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
-	std::tie(srcRow, srcCol, dstRow, dstCol) = positions;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions;
 	if (!(std::abs(srcCol - dstCol) <= MOVING_RANGE && std::abs(srcRow - dstRow) <= MOVING_RANGE))
 		return false;
 	
