@@ -26,7 +26,9 @@ int main()
 		match->detach();
 		threads.push_back(match);
 	}
-	for (auto thread : threads) {
+
+	for (auto thread : threads) 
+	{
 		delete thread;
 	}
 	return 0;
