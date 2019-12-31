@@ -128,7 +128,7 @@ int main()
 	if (strncmp(data, "wait", 4) == 0) {
 		strcpy(msgToGraphics, "wait");
 		sock->receive(data, 10240, receieved);
-		if (std::string(data).find("connect") != string::npos) 
+		if (strncmp(data, "wait", 4) == 0)
 		{	//white
 			str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
 			str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
