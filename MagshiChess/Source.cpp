@@ -131,14 +131,14 @@ int main()
 		str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
 		str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 
-		g = new Game(str4game, p, change, mu, sock);
+		g = new Game(str4game, p, change, mu, sock, Color::white);
 		g->setCurrTurn(true);
 	}
 	else {  //black
 		str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
 		str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbKqbnr";
 
-		g = new Game(str4game, p, change, mu, sock);
+		g = new Game(str4game, p, change, mu, sock, Color::black);
 		g->setCurrTurn(false);
 	}
 	std::thread(serverListener, sock, chat, change, g).detach();

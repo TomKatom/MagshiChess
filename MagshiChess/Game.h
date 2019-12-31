@@ -18,6 +18,7 @@ private:
 	Pipe _p;
 	Pipe _change;
 	bool _thisTurn;
+	Color _onlinePlayerColor;
 	Player*  _whitePlayer;
 	Player *_blackPlayer;
 	std::mutex* _mu;

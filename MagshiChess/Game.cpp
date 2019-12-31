@@ -3,7 +3,7 @@
 #pragma warning(disable:4996)
 #include <thread>
 //c'tor
-Game::Game(std::string& startingBoard, Pipe& p, Pipe& change, std::mutex* mu, sf::TcpSocket* sock) : _p(p), _change(change)
+Game::Game(std::string& startingBoard, Pipe& p, Pipe& change, std::mutex* mu, sf::TcpSocket* sock, Color onlinePlayerColor) : _p(p), _change(change)
 {
 	std::string revreseBoard = startingBoard;
 	reverse(revreseBoard.begin(), revreseBoard.end() );
@@ -13,6 +13,7 @@ Game::Game(std::string& startingBoard, Pipe& p, Pipe& change, std::mutex* mu, sf
 	this->_thisTurn = false;
 	this->_mu = mu;
 	this->_sock = sock;
+	this->_onlinePlayerColor = onlinePlayerColor;
 }
 
 //d'tor
@@ -59,17 +60,18 @@ void Game::playTurn(std::string& messageFromGraphics)
 			this->_whitePlayer->makeMove(positions);
 			this->_blackPlayer->makeMove(positions);
 
+			char moveType = ' ';
 			this->_thisTurn = false;
 
-			if (this->_blackPlayer->getKing()->isChecked(this->_blackPlayer->getBoard()))
+			if (this->_onlinePlayerColor != Color::black and this->_blackPlayer->getKing()->isChecked(this->_blackPlayer->getBoard()))
 				checkedPlayer = this->_blackPlayer;
 
-			else if (this->_whitePlayer->getKing()->isChecked(this->_whitePlayer->getBoard()))
+			else if (this->_onlinePlayerColor != Color::white and this->_whitePlayer->getKing()->isChecked(this->_whitePlayer->getBoard()))
 				checkedPlayer = this->_whitePlayer;
 
 			if (checkedPlayer != nullptr)
 			{
-
+				moveType = 'c'
 				move_code = valid_check;
 				for (int i = 0; i < 8 and !notMate; i++) {
 					for (int j = 0; j < 8 and !notMate; j++) {
@@ -96,6 +98,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 				}
 
 				if (mate) {
+					moveTyep = 'm';
 					move_code = check_mate;
 					if(checkedPlayer->getColor() == Color::black)
 						strcpy(msgToGraphics, "mate black");
@@ -128,6 +131,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 				msg += (char)(dstRow + '0');
 				msg += ','; 
 				msg += (char)(dstCol + '0');
+				msg += ' ' + moveType;
 				this->_sock->send(msg.c_str(), msg.length() + 1);
 			}
 			if (choose_white) {
