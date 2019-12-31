@@ -348,35 +348,36 @@ namespace chessGraphics
                     try
                     {
                         string m = changePipe.getEngineMessage();
-                        if (m.StartsWith("change"))
+                    if (m.StartsWith("change"))
+                    {
+                        row = m[7] - '0';
+                        col = m[9] - '0';
+                        piece = m[11];
+                        Invoke((MethodInvoker)delegate
                         {
-                            row = m[7] - '0';
-                            col = m[9] - '0';
-                            piece = m[11];
-                            Invoke((MethodInvoker)delegate
-                            {
-                                matBoard[row, col].BackgroundImage = getImageBySign(piece);
-                                this.Refresh();
-                            });
-                            
+                            matBoard[row, col].BackgroundImage = getImageBySign(piece);
+                            this.Refresh();
+                        });
+
+                    }
+                    else if (m.StartsWith("choice"))
+                    {
+                        if (m.Substring(7) == "white")
+                        {
+                            choice = new PieceSelection();
+                            choice.initForm(true, enginePipe);
                         }
-                        else if (m.StartsWith("choice"))
+                        else
                         {
-                            if (m.Substring(7) == "white")
-                            {
-                                choice = new PieceSelection();
-                                choice.initForm(true, enginePipe);
-                            }
-                            else
-                            {
-                                choice = new PieceSelection();
-                                choice.initForm(false, enginePipe);
-                            }
-                        Invoke((MethodInvoker)delegate{
+                            choice = new PieceSelection();
+                            choice.initForm(false, enginePipe);
+                        }
+                        Invoke((MethodInvoker)delegate
+                        {
                             choice.Show();
                         });
-                        }
-                        else if (m.StartsWith("mate"))
+                    }
+                    else if (m.StartsWith("mate"))
                     {
                         won = m.Substring(5);
                         switch (won)
@@ -395,7 +396,7 @@ namespace chessGraphics
                             return;
                         });
                     }
-                        else if (m.StartsWith("chat"))
+                    else if (m.StartsWith("chat"))
                     {
                         Invoke((MethodInvoker)delegate
                         {
@@ -403,19 +404,36 @@ namespace chessGraphics
                             this.chatBox.AppendText(Environment.NewLine);
                         });
                     }
-                        else if (m.StartsWith("wait"))
+                    else if (m.StartsWith("wait"))
                     {
                         Invoke((MethodInvoker)delegate
                         {
                             this.wait.Visible = true;
                         });
                     }
-                        else if (m.StartsWith("connect"))
+                    else if (m.StartsWith("connect"))
                     {
                         Invoke((MethodInvoker)delegate
                         {
                             this.wait.Visible = false;
                         });
+                    }
+                    else if (m.StartsWith("turn"))
+                    {
+                        if (this.lblCurrentPlayer.Text == "White")
+                        {
+                            Invoke((MethodInvoker)delegate
+                            {
+                                this.lblCurrentPlayer.Text = "Black";
+                            });
+                        }
+                        else if(this.lblCurrentPlayer.Text == "Black")
+                        {
+                            Invoke((MethodInvoker)delegate
+                            {
+                                this.lblCurrentPlayer.Text = "White";
+                            });
+                        }
                     }
                     }
                     catch
