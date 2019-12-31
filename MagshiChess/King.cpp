@@ -11,7 +11,7 @@ Setting the pieceChar according to the color of the piece
 	this->_moved = false;
 	this->_pos = new int[2];
 
-	if (isupper(startingBoard[0]))
+	if (!isupper(startingBoard[0]))
 	{
 		if (color == Color::black)
 		{
