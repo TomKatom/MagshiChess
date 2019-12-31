@@ -30,7 +30,9 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 		sock->receive(data, 10240, received);
 		msg = string(data);
 		if (msg.find("chat") != string::npos) {
+			msg = "chat " + string(data);
 			strcpy(data, msg.c_str());
+			changePipe.sendMessageToGraphics(data);
 			cout << "Received data " << endl;
 			std::cout << "Sent to pipe: " << msg << endl;
 		} // move 1,1 3,3
@@ -41,14 +43,24 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			dstRow = msg[9] - '0';
 			dstCol = msg[11] - '0';
 			g->getPlayer()->makeMove(std::tuple<int, int, int, int>(srcRow, srcCol, dstRow, dstCol));
-			msg = "change " + (char)(srcRow + '0') + ',' + (char)(srcCol + '0') + '#';
+			msg = "change ";
+			msg += (char)(srcRow + '0'); 
+			msg += ','; 
+			msg += (char)(srcCol + '0'); 
+			msg += ' ';
+			msg += '#';
 			strcpy(data, msg.c_str());
 			data[msg.length() + 1] = 0;
-			chatPipe.sendMessageToGraphics(data);
-			msg = "change " + (char)(dstRow + '0') + ',' + (char)(dstCol + '0') + g->getPlayer()->getBoard()[dstRow][dstCol]->getPieceChar();
+			changePipe.sendMessageToGraphics(data);
+			msg = "change "; 
+			msg += (char)(dstRow + '0');
+			msg += ',';
+			msg += (char)(dstCol + '0');
+			msg += ' ';
+			msg += g->getPlayer()->getBoard()[dstRow][dstCol]->getPieceChar();
 			strcpy(data, msg.c_str());
 			data[msg.length() + 1] = 0;
-			mu->unlock();
+			changePipe.sendMessageToGraphics(data);
 		}
 	}
 }
@@ -113,22 +125,19 @@ int main()
 		sock->receive(data, 10240, receieved);
 		if (std::string(data).find("connect") != string::npos) {
 		}
-		sock->receive(data, 10240, receieved);
-		str4gui = std::string(data);
-		sock->receive(data, 10240, receieved);
-		str4game = std::string(data);
+		str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
+		str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 		g = new Game(str4game, p, change, mu, sock);
 		g->setCurrTurn(true);
 	}
 	else {
-		str4gui = std::string(data);
-		sock->receive(data, 10240, receieved);
-		str4game = std::string(data);
+		str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
+		str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbKqbnr";
 		g = new Game(str4game, p, change, mu, sock);
 		g->setCurrTurn(false);
 	}
-
-
+	std::thread(serverListener, sock, chat, change, g).detach();
+	std::thread(chatPipeListener, sock, chat).detach();
 
 	// msgToGraphics should contain the board string accord the protocol
 	// YOUR CODE
