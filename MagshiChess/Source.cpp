@@ -120,19 +120,21 @@ int main()
 	sock->connect("127.0.0.1", 5000);
 	chat.connect();
 	sock->receive(data, 10240, receieved);
-	if (std::string(data).find("wait") != string::npos) {
+	if (strncmp(data, "wait", 4) == 0) {
 		strcpy(msgToGraphics, "wait");
 		sock->receive(data, 10240, receieved);
 		if (std::string(data).find("connect") != string::npos) {
-		}
+		} //white
 		str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
 		str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
+
 		g = new Game(str4game, p, change, mu, sock);
 		g->setCurrTurn(true);
 	}
-	else {
+	else {  //black
 		str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
 		str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbKqbnr";
+
 		g = new Game(str4game, p, change, mu, sock);
 		g->setCurrTurn(false);
 	}
