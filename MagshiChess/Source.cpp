@@ -38,10 +38,10 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 		} // move 1,1 3,3
 		if (msg.find("move") != string::npos) {
 			std::unique_lock<std::mutex> lock(*mu);
-			srcRow = msg[5] - '0';
+			srcRow = 7 - msg[5] - '0';
 			srcCol = msg[7] - '0';
 			dstRow = msg[9] - '0';
-			dstCol = msg[11] - '0';
+			dstCol = 7 - msg[11] - '0';
 			g->getPlayer()->makeMove(std::tuple<int, int, int, int>(srcRow, srcCol, dstRow, dstCol));
 			msg = "change ";
 			msg += (char)(srcRow + '0'); 
