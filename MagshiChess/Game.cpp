@@ -203,7 +203,6 @@ void Game::playTurn(std::string& messageFromGraphics)
 			strcpy(msgToGraphics, msg.c_str());
 			this->_change.sendMessageToGraphics(msgToGraphics);
 		}
-		_mu->unlock();
 	}
 	else {
 		msgToGraphics[0] = (char)(2 + '0');
