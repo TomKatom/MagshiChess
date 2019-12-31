@@ -29,7 +29,7 @@ void Game::setCurrTurn(bool turn) {
 
 bool Game::isValidCode(error_level_code e) const
 {
-	if (!(e == valid || e == valid_check ))
+	if (!(e == valid || e == valid_check ||e == check_mate))
 		return false;
 	return true;
 }
@@ -44,6 +44,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 	string result = "";
 	string msg;
 	Piece* curr;
+	char moveType;
 	bool notMate = false;
 	Player* checkedPlayer = nullptr;
 	bool mate = false;
@@ -60,7 +61,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 			this->_whitePlayer->makeMove(positions);
 			this->_blackPlayer->makeMove(positions);
 
-			char moveType = ' ';
+			moveType = ' ';
 			this->_thisTurn = false;
 
 			if (this->_onlinePlayerColor != Color::black and this->_blackPlayer->getKing()->isChecked(this->_blackPlayer->getBoard()))
@@ -71,7 +72,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 
 			if (checkedPlayer != nullptr)
 			{
-				moveType = 'c'
+				moveType = 'c';
 				move_code = valid_check;
 				for (int i = 0; i < 8 and !notMate; i++) {
 					for (int j = 0; j < 8 and !notMate; j++) {
@@ -98,7 +99,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 				}
 
 				if (mate) {
-					moveTyep = 'm';
+					moveType = 'm';
 					move_code = check_mate;
 					if(checkedPlayer->getColor() == Color::black)
 						strcpy(msgToGraphics, "mate black");
@@ -118,11 +119,10 @@ void Game::playTurn(std::string& messageFromGraphics)
 				choose_black = true;
 			}
 
-			
 			msgToGraphics[0] = (char)(move_code + '0');
 			msgToGraphics[1] = 0;
 			this->_p.sendMessageToGraphics(msgToGraphics);
-			if (move_code == error_level_code::valid) {
+			if (isValidCode(move_code)) {
 				msg = "move ";
 				msg += (char)(srcRow + '0');
 				msg += ',';
@@ -131,7 +131,8 @@ void Game::playTurn(std::string& messageFromGraphics)
 				msg += (char)(dstRow + '0');
 				msg += ','; 
 				msg += (char)(dstCol + '0');
-				msg += ' ' + moveType;
+				msg += ' ';
+				msg += moveType;
 				this->_sock->send(msg.c_str(), msg.length() + 1);
 			}
 			if (choose_white) {
