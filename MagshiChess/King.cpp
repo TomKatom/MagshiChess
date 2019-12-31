@@ -1,8 +1,9 @@
 #include "King.h"
 #include <cmath>        // std::abs
 #include "PipeInputOperations.h"
+#include <locale>
 
-King::King(Color color) : Piece(color)
+King::King(Color color, std::string& startingBoard) : Piece(color)
 {
 	/*
 Setting the pieceChar according to the color of the piece
@@ -10,9 +11,33 @@ Setting the pieceChar according to the color of the piece
 	this->_moved = false;
 	this->_pos = new int[2];
 
-	this->_pos[0] = 0;
-	this->_pos[1] = 4;
-	
+	if (isupper(startingBoard[0]))
+	{
+		if (color == Color::black)
+		{
+			this->_pos[0] = 0;
+			this->_pos[1] = 4;
+		}
+		else
+		{
+			this->_pos[0] = 7;
+			this->_pos[1] = 4;
+		}
+	}
+	else
+	{
+		if (color == Color::black)
+		{
+			this->_pos[0] = 7;
+			this->_pos[1] = 4;
+		}
+		else
+		{
+			this->_pos[0] = 0;
+			this->_pos[1] = 4;
+		}
+	}
+
 	switch (color) {
 	case Color::white:
 		this->_pieceChar = 'K';

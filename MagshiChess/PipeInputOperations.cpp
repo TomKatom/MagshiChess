@@ -51,7 +51,7 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 				break;
 			case 'K':
 			case 'k':
-				temp[i][j] = new King(piece_color);
+				temp[i][j] = new King(piece_color, startingBoard);
 				break;
 			case 'N':
 			case 'n':
