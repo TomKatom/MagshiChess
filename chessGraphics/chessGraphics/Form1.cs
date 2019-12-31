@@ -410,7 +410,7 @@ namespace chessGraphics
                             this.wait.Visible = true;
                         });
                     }
-                        else if (m.StartsWith("connected"))
+                        else if (m.StartsWith("connect"))
                     {
                         Invoke((MethodInvoker)delegate
                         {
