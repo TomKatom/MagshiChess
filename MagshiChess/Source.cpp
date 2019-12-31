@@ -28,9 +28,8 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe)
 		msg = string(data);
 		if (msg.find("chat") != string::npos) {
 			strcpy(data, msg.c_str());
-			cout << "Received from server: " << msg;
-			changePipe.sendMessageToGraphics(data);
-			cout << "Sent to pipe: " << msg << endl;
+			cout << "Received data " << endl;
+			std::cout << "Sent to pipe: " << msg << endl;
 		}
 	}
 }
@@ -47,11 +46,12 @@ void chatPipeListener(sf::TcpSocket* sock, Pipe chatPipe) {
 int main()
 {
 	srand(time_t(NULL));
-	//std::string str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";  //white - check
-	//std::string str4game ="rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
+	std::string str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";  //white - check
+	std::string str4game ="rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 
-	std::string str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";  //black - check
-	std::string str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbKqbnr";
+	//std::string str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";  //black - check
+	//std::string str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbKqbnr";
+
 	//ayer playerPl(white);
 	Pipe p(0);
 	Pipe change(1);
