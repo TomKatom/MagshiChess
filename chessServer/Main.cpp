@@ -3,6 +3,7 @@
 #include <future>
 #include <thread>
 #include <vector>
+#include <exception>
 
 #define WAIT_MSG "wait"
 #define CONNECT_MSG "connect"
@@ -62,13 +63,11 @@ void forward_msg(sf::TcpSocket* sock1, sf::TcpSocket* sock2)
 		}
 		else
 		{
-			std::cout << "Received: " << std::string(data) << std::endl;
 			if (sock2->send(data, strlen(data)+1) != sf::Socket::Done) 
 			{
 				sendDisconnectMsg(sock1);
 				break;
 			}
-			std::cout << "Sending: " << std::string(data) << std::endl;
 		}
 	}
 }
@@ -81,6 +80,33 @@ void matchThread(sf::TcpSocket* sock1, sf::TcpSocket* sock2)
 
 }
 
+void createNewConnection(sf::TcpListener& listener, sf::TcpSocket* client1, sf::TcpSocket* client2)
+{
+	if (listener.accept(*client1) != sf::Socket::Done)
+		throw std::exception("Can not accept connection");
+
+	if (client1->send(WAIT_MSG, strlen(WAIT_MSG) + 1) != sf::Socket::Done)  //Send waiting msg to first client
+		throw(std::exception("Client 1 is disconnected"));
+
+	if (listener.accept(*client2) != sf::Socket::Done)
+		throw(std::exception("Client 2 is disconnected"));
+
+
+	if (client1->send(CONNECT_MSG, strlen(CONNECT_MSG) + 1) != sf::Socket::Done)  //Send connect msg to first client
+		throw(std::exception("Client 1 is disconnected"));
+
+	if (client2->send(CONNECT_MSG, strlen(CONNECT_MSG) + 1) != sf::Socket::Done)   //Send connect msg to second client
+	{
+		sendDisconnectMsg(client1);
+		throw(std::exception("Client 2 is disconnected"));
+	}
+
+
+	if (sendBoards(client1, client2) != sf::Socket::Done)
+	{
+		throw(std::exception("One of the Clients is disconnected"));
+	}
+}
 int main() 
 {
 	sf::TcpListener listener;
@@ -94,31 +120,12 @@ int main()
 	
 
 		if (listener.listen(5000) != sf::Socket::Done)
-		{
-			// error...
-		}
-	
-		if (listener.accept(*client1) != sf::Socket::Done)
-			continue;  
-
-		if (client1->send(WAIT_MSG, strlen(WAIT_MSG)+1) != sf::Socket::Done)  //Send waiting msg to first client
-			continue;
-
-		if (listener.accept(*client2) != sf::Socket::Done)
 			continue;
 		
-
-		if (client1->send(CONNECT_MSG, strlen(CONNECT_MSG)+1) != sf::Socket::Done)  //Send connect msg to first client
-			continue;
-		
-		if (client2->send(CONNECT_MSG, strlen(CONNECT_MSG)+1) != sf::Socket::Done)   //Send connect msg to second client
-		{
-			sendDisconnectMsg(client1);
-			continue;
+		try {
+			createNewConnection(listener, client1, client2);
 		}
-			
-
-		if (sendBoards(client1, client2) != sf::Socket::Done)
+		catch (std::exception & e)
 		{
 			continue;
 		}
