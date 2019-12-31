@@ -16,8 +16,16 @@ This function convert from one player positions on board to another - in the mov
 */
 void ChessProtocol::convertMoveCmd(char* data)
 {
-	auto [opcode, srcRow, srcCol, dstRow, dstCol, pieceChar] = phraseDataToPos(data);
-	data = ChessProtocol::convertPosToData(std::make_tuple(opcode, 7 - srcRow, 7 - srcCol, 7 - dstRow, 7 - dstCol, pieceChar));
+	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
+	srcRow = data[5] - '0';
+	srcCol = data[7] - '0';
+	dstRow = data[9] - '0';
+	dstCol = data[11] - '0';
+	data[5] = (char)(7 - srcRow + '0');
+	data[7] = (char)(7 - srcCol + '0');
+	data[9] = (char)(7 - dstRow + '0');
+	data[11] = (char)(7 - dstCol + '0');
+	
 }
 
 std::tuple<char*, int, int, int, int, char> ChessProtocol::phraseDataToPos(char* data)
