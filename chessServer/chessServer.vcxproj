@@ -130,11 +130,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ChessProtocolFunctions.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ServerOperationsFunctions.cpp" />
+    <ClCompile Include="ServerFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ServerOperationsFunctions.hpp" />
+    <ClInclude Include="ChessProtocolFunctions.hpp" />
+    <ClInclude Include="ServerFunctions.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

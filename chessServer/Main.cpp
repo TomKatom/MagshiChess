@@ -1,4 +1,4 @@
-#include "ServerOperationsFunctions.hpp"
+#include "ServerFunctions.hpp"
 
 int main() 
 {
@@ -15,14 +15,14 @@ int main()
 			continue;
 		
 		try {
-			createNewConnection(listener, client1, client2);
+			ServerFunctions::createNewConnection(listener, client1, client2);
 		}
 		catch (std::exception & e)
 		{
 			continue;
 		}
 
-		match = new std::thread(matchThread, client1, client2);
+		match = new std::thread(ServerFunctions::matchThread, client1, client2);
 		match->detach();
 		threads.push_back(match);
 	}
