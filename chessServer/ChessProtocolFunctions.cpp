@@ -8,7 +8,7 @@ This function checks if the data that recived from the other player is movment c
 */
 bool ChessProtocol::isMsgCmd(char* data)
 {
-	return std::string(data).find("msg") != std::string::npos;
+	return std::string(data).find("chat") != std::string::npos;
 }
 
 /*
