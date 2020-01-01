@@ -27,10 +27,12 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 	string msg = "";
 	string value = "";
 	std::size_t received;
-	while (true) {
+	while (true) 
+	{
 		sock->receive(data, 10240, received);
 		msg = string(data);
-		if (msg.find("chat") != string::npos) {
+		if (msg.find("chat") != string::npos) 
+		{
 			std::cout << "Got msg cmd";
 			msg = "chat " + string(data);
 			strcpy(data, msg.c_str());
@@ -38,9 +40,10 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			cout << "Received data " << endl;
 			std::cout << "Sent to pipe: " << msg << endl;
 		} // move 1,1 3,3
-		else if (msg.find("move") != string::npos) {
+		else if (msg.find("move") != string::npos)
+		{
 			std::unique_lock<std::mutex> lock(*mu);
-			if (msg.length() > 14) {
+			if (msg.length() >= 14) {
 				strcpy(data, "msg 1");
 				changePipe.sendMessageToGraphics(data);
 			}
@@ -74,17 +77,19 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			changePipe.sendMessageToGraphics(data);
 			g->setCurrTurn(true);
 		}
-		else if (msg.find("mate") != string::npos) {
+		else if (msg.find("mate") != string::npos) 
+		{
 			if (g->getOnlinePlayer()->getColor() == Color::black) {
-				strcpy(data, "mate white");
-				changePipe.sendMessageToGraphics(data);
-			}
-			else if (g->getOnlinePlayer()->getColor() == Color::white) {
 				strcpy(data, "mate black");
 				changePipe.sendMessageToGraphics(data);
 			}
+			else if (g->getOnlinePlayer()->getColor() == Color::white) {
+				strcpy(data, "mate white");
+				changePipe.sendMessageToGraphics(data);
+			}
 		}
-		else if (msg.find("crown") != string::npos) {
+		else if (msg.find("crown") != string::npos) 
+		{
 			std::unique_lock<std::mutex> lock(*mu);
 			crown = msg[10];
 			srcRow = msg[6] - '0';
@@ -102,7 +107,13 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			msg += crown;
 			strcpy(data, msg.c_str());
 			changePipe.sendMessageToGraphics(data);
+		else  if (msg.find("disconnect") != string::npos)
+		{
+			strcpy(data, "disconnect");
+			changePipe.sendMessageToGraphics(data);
+			_exit(0);
 		}
+		
 	}
 }
 void chatPipeListener(sf::TcpSocket* sock, Pipe chatPipe) {
