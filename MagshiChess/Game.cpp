@@ -103,11 +103,14 @@ void Game::playTurn(std::string& messageFromGraphics)
 				if (mate) {
 					moveType = 'm';
 					move_code = check_mate;
-					if(checkedPlayer->getColor() == Color::black)
+					if (checkedPlayer->getColor() == Color::black) {
 						strcpy(msgToGraphics, "mate black");
-					else 
+					}
+					else {
 						strcpy(msgToGraphics, "mate white");
+					}
 					this->_change.sendMessageToGraphics(msgToGraphics);
+					this->_sock->send(std::string("mate").c_str(), std::string("mate").length() + 1);
 				//_exit(0);
 				}
 			}

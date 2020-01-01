@@ -42,8 +42,15 @@ namespace chessGraphics
             enginePipe.connect();
             changePipe.connect();
             chatPipe.connect();
-            Invoke((MethodInvoker)delegate {  
+            Invoke((MethodInvoker)delegate
+            {
+                wait.Visible = true;
+                lblWaiting.Visible = false;
+            });
+            enginePipe.getEngineMessage();
+            Invoke((MethodInvoker)delegate {
 
+                wait.Visible = false;
                 lblWaiting.Visible = false;
                 lblCurrentPlayer.Visible = true;
                 label1.Visible = true;
