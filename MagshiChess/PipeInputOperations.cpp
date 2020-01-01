@@ -70,3 +70,25 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 
 }
 
+Piece* PipeInputOperations::getPieceFromChar(char ch) {
+	switch (ch) {
+		case 'Q':
+			return new Queen(Color::white);
+			break;
+		case 'q':
+			return new Queen(Color::black);
+			break;
+		case 'B':
+			return new Bishop(Color::white);
+			break;
+		case 'b':
+			return new Bishop(Color::black);
+			break;
+		case 'N':
+			return new Knight(Color::white);
+			break;
+		case 'n':
+			return new Knight(Color::black);
+			break;
+	}
+}
