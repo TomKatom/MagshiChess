@@ -448,6 +448,13 @@ namespace chessGraphics
                             this.lblResult.Text = convertEngineToText(m[4].ToString());
                         });
                     }
+                    else if (m.StartsWith("disconnect"))
+                    {
+                        Invoke((MethodInvoker)delegate{
+                            MessageBox.Show("Opponent Disconnected!");
+                            this.Close();
+                        });
+                    }
                     }
                     catch
                     {
