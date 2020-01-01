@@ -51,7 +51,6 @@ namespace chessGraphics
             Invoke((MethodInvoker)delegate {
 
                 wait.Visible = false;
-                lblWaiting.Visible = false;
                 lblCurrentPlayer.Visible = true;
                 label1.Visible = true;
                 chatBox.SelectionStart = chatBox.Text.Length;

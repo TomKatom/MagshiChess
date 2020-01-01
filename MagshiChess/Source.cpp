@@ -69,6 +69,16 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			changePipe.sendMessageToGraphics(data);
 			g->setCurrTurn(true);
 		}
+		else if (msg.find("mate") != string::npos) {
+			if (g->getOnlinePlayer()->getColor() == Color::black) {
+				strcpy(data, "mate white");
+				changePipe.sendMessageToGraphics(data);
+			}
+			else if (g->getOnlinePlayer()->getColor() == Color::white) {
+				strcpy(data, "mate black");
+				changePipe.sendMessageToGraphics(data);
+			}
+		}
 	}
 }
 void chatPipeListener(sf::TcpSocket* sock, Pipe chatPipe) {
