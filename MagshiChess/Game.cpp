@@ -120,7 +120,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 			if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'P' and dstRow == 7) {
 				choose_white = true;
 			}
-			else if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'p' and dstRow == 0) {
+			else if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'p' and dstRow == 7) {
 				choose_black = true;
 			}
 
