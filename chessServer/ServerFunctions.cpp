@@ -1,6 +1,8 @@
 #include "ServerFunctions.hpp"
 #include "ChessProtocolFunctions.hpp"
 
+#include <iostream>
+
 #define WAIT_MSG "wait"
 #define CONNECT_MSG "connect"
 #define DISCONNECT_MSG "disconnect"
@@ -14,6 +16,8 @@ void ServerFunctions::createNewConnection(sf::TcpListener& listener, sf::TcpSock
 	if (client1->send(WAIT_MSG, strlen(WAIT_MSG) + 1) != sf::Socket::Done)  //Send waiting msg to first client
 		throw(std::exception("Client 1 is disconnected"));
 
+	std::cout << "send wait msg to client 1";
+
 	if (listener.accept(*client2) != sf::Socket::Done)
 		throw(std::exception("Client 2 is disconnected"));
 
@@ -21,6 +25,9 @@ void ServerFunctions::createNewConnection(sf::TcpListener& listener, sf::TcpSock
 	if (client1->send(CONNECT_MSG, strlen(CONNECT_MSG) + 1) != sf::Socket::Done)  //Send connect msg to first client
 		throw(std::exception("Client 1 is disconnected"));
 	
+	if (client2->send(CONNECT_MSG, strlen(CONNECT_MSG) + 1) != sf::Socket::Done)  //Send connect msg to first client
+		throw(std::exception("Client 2 is disconnected"));
+
 	//if (sendBoards(client1, client2) != sf::Socket::Done)
 	//{
 		//throw(std::exception("One of the Clients is disconnected"));
