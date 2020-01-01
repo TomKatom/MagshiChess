@@ -40,7 +40,7 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 		} // move 1,1 3,3
 		else if (msg.find("move") != string::npos) {
 			std::unique_lock<std::mutex> lock(*mu);
-			if (msg.length() > 14) {
+			if (msg.length() >= 14) {
 				strcpy(data, "msg 1");
 				changePipe.sendMessageToGraphics(data);
 			}
