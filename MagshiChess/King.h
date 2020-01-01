@@ -7,7 +7,7 @@
 class King : public Piece
 {
 public:
-	King(Color color, std::string& startingBoard);
+	King(Color color, std::string& startingBoard, Color onlinePlayerColor);
 	~King();
 
 	virtual bool validMove(Piece*** board, std::tuple<int, int, int, int> positions);

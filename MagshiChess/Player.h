@@ -9,7 +9,7 @@
 class Player
 {
 public: 
-	Player(Color c, std::string startingBoard);    //c'tor
+	Player(Color c, std::string startingBoard, Color onlinePlayerColor);    //c'tor
 	~Player();   //d'tor
 
 	std::tuple<bool, Piece*> makeMove(std::tuple<int, int, int, int> positions);

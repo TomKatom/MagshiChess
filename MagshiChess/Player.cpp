@@ -2,19 +2,19 @@
 #include <locale>
 
 
-Player::Player(Color c, std::string startingBoard) //c'tor
+Player::Player(Color c, std::string startingBoard,Color onlinePlayerColor) //c'tor
 {
 	this->_color = c;
-	this->_board = PipeInputOperations::generateBoard(this->_color, startingBoard);
-	if (!isupper(startingBoard[0]))
+	this->_board = PipeInputOperations::generateBoard(this->_color, startingBoard, onlinePlayerColor);
+	if (onlinePlayerColor == Color::white)
 		if(c == Color::black) 
-			this->_king = dynamic_cast<King*>((this->_board[0][4]));  //set king piece of player
+			this->_king = dynamic_cast<King*>((this->_board[7][4]));  //set king piece of player
 		else 
 			this->_king = dynamic_cast<King*>(this->_board[0][4]); 
 	else
 			if(c == Color::black) 
-				this->_king = dynamic_cast<King*>((this->_board[7][4]));
-			else  this->_king = dynamic_cast<King*>((this->_board[0][4]));
+				this->_king = dynamic_cast<King*>((this->_board[0][4]));
+			else  this->_king = dynamic_cast<King*>((this->_board[7][4]));
 }
 
 Player::~Player()  //d'tor

@@ -8,8 +8,8 @@ Game::Game(std::string& startingBoard, Pipe& p, Pipe& change, std::mutex* mu, sf
 	std::string revreseBoard = startingBoard;
 	reverse(revreseBoard.begin(), revreseBoard.end() );
 
-	this->_whitePlayer = new Player(Color::white, revreseBoard);
-	this->_blackPlayer = new Player(Color::black, revreseBoard);
+	this->_whitePlayer = new Player(Color::white, revreseBoard, onlinePlayerColor);
+	this->_blackPlayer = new Player(Color::black, revreseBoard, onlinePlayerColor);
 	this->_thisTurn = false;
 	this->_mu = mu;
 	this->_sock = sock;
@@ -53,7 +53,9 @@ void Game::playTurn(std::string& messageFromGraphics)
 	char msgToGraphics[1024];
 
 	if (this->_thisTurn) {
-		move_code = this->_whitePlayer->isValidCMD(positions);
+
+		if(this->_onlinePlayerColor == Color::white) move_code = this->_whitePlayer->isValidCMD(positions);
+		else move_code = this->_blackPlayer->isValidCMD(positions);
 		if (isValidCode(move_code))
 		{
 			std::unique_lock<std::mutex> lock(*_mu);
@@ -134,6 +136,9 @@ void Game::playTurn(std::string& messageFromGraphics)
 				msg += ' ';
 				msg += moveType;
 				this->_sock->send(msg.c_str(), msg.length() + 1);
+
+				strcpy(msgToGraphics, "turn");
+				this->_change.sendMessageToGraphics(msgToGraphics);
 			}
 			if (choose_white) {
 				result = "";

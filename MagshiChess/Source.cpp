@@ -29,7 +29,9 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 	while (true) {
 		sock->receive(data, 10240, received);
 		msg = string(data);
+		std::cout << "msg from server: " << msg;
 		if (msg.find("chat") != string::npos) {
+			std::cout << "Got msg cmd";
 			msg = "chat " + string(data);
 			strcpy(data, msg.c_str());
 			changePipe.sendMessageToGraphics(data);
@@ -37,12 +39,12 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			std::cout << "Sent to pipe: " << msg << endl;
 		} // move 1,1 3,3
 		if (msg.find("move") != string::npos) {
+			std::cout << "got move cmd";
 			std::unique_lock<std::mutex> lock(*mu);
 			srcRow = (msg[5] - '0');
 			guiSrcRow = 7 - srcRow;
 			srcCol = (msg[7] - '0');
-			dstRow = 7 - (msg[9] - '0');
-			guiDstRow = 7 - dstRow;
+			guiDstRow = 7 - (msg[9] - '0');
 			dstCol = (msg[11] - '0');
 			g->getPlayer()->makeMove(std::tuple<int, int, int, int>(srcRow, srcCol, dstRow, dstCol));
 			msg = "change ";
@@ -55,7 +57,7 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			data[msg.length() + 1] = 0;
 			changePipe.sendMessageToGraphics(data);
 			msg = "change "; 
-			msg += (char)(guiDstRow-1 + '0');
+			msg += (char)(guiDstRow + '0');
 			msg += ',';
 			msg += (char)(dstCol + '0');
 			msg += ' ';
@@ -87,7 +89,7 @@ int main()
 	std::string str4game ="";
 
 	//std::string str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";  //black - check
-	//std::string str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbKqbnr";
+	//std::string str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr";
 
 	//ayer playerPl(white);
 	char data[10240] = { 0 };
@@ -125,10 +127,10 @@ int main()
 	sock->connect("127.0.0.1", 5000);
 	chat.connect();
 	sock->receive(data, 10240, receieved);
-	if (strncmp(data, "wait", 4) == 0) {
+	if (std::string(data).find("wait") != std::string::npos) {
 		strcpy(msgToGraphics, "wait");
 		sock->receive(data, 10240, receieved);
-		if (strncmp(data, "wait", 4) == 0)
+		if (std::string(data).find("connect") != std::string::npos)
 		{	//white
 			str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
 			str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
@@ -139,7 +141,7 @@ int main()
 	}
 	else {  //black
 		str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
-		str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbKqbnr";
+		str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr";
 
 		g = new Game(str4game, p, change, mu, sock, Color::black);
 		g->setCurrTurn(false);

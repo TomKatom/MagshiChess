@@ -10,7 +10,7 @@ std::tuple<int, int, int, int> PipeInputOperations::moveToPos(std::string move) 
 	return std::make_tuple(srcRow, srcCol, dstRow, dstCol);
 }
 
-Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& startingBoard)
+Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& startingBoard, Color onlinePlayerColor)
 {
 	Piece*** temp = new Piece * *[8];
 	Color piece_color;
@@ -51,7 +51,7 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 				break;
 			case 'K':
 			case 'k':
-				temp[i][j] = new King(piece_color, startingBoard);
+				temp[i][j] = new King(piece_color, startingBoard, onlinePlayerColor);
 				break;
 			case 'N':
 			case 'n':

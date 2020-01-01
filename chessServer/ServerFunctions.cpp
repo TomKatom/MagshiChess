@@ -16,8 +16,6 @@ void ServerFunctions::createNewConnection(sf::TcpListener& listener, sf::TcpSock
 	if (client1->send(WAIT_MSG, strlen(WAIT_MSG) + 1) != sf::Socket::Done)  //Send waiting msg to first client
 		throw(std::exception("Client 1 is disconnected"));
 
-	std::cout << "send wait msg to client 1";
-
 	if (listener.accept(*client2) != sf::Socket::Done)
 		throw(std::exception("Client 2 is disconnected"));
 
