@@ -9,7 +9,8 @@ public:
 	Game(std::string& startingBoard, Pipe &p, Pipe& change, std::mutex* mu, sf::TcpSocket* sock, Color onlinePlayerColor);
 	~Game();
 	void setCurrTurn(bool turn);
-	Player* getOtherPlayer();
+	Player* getOtherPlayer() const;
+	Player* getOnlinePlayer() const;
 
 	void playTurn(std::string& getMessageFromGraphics);
 

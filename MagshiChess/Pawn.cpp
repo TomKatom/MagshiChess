@@ -2,9 +2,10 @@
 #include "PipeInputOperations.h"
 #include <cmath>        // std::abs
 
-Pawn::Pawn(Color c) : Piece(c)
+Pawn::Pawn(Color c, Color onlinePlayerColor) : Piece(c)
 {
 	this->_moved = false;
+	this->_onlinePlayerColor = onlinePlayerColor;
 	/*
 	Setting the pieceChar according to the color of the piece
 	*/
@@ -53,14 +54,48 @@ bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 		{
 			if (this->_moved) //piece moved already
 			{
-				if ((dstRow - srcRow) != MOVED_PAWN_MOVING_RANGE)
+				int distance = 0;
+				if (this->_onlinePlayerColor == Color::white)
+				{
+					if (this->_color == Color::white)
+						distance = dstRow - srcRow;
+
+					else
+						distance = srcRow - dstRow;
+				}
+				else
+				{
+					if (this->_color == Color::white)
+						distance = srcRow - dstRow;  
+
+					else
+						distance = dstRow - srcRow;
+				}
+				if (distance != MOVED_PAWN_MOVING_RANGE)
 					return false;
 				else
-					return false;
+					return true;
 			}
 			else  //first step
 			{
-				if ((dstRow - srcRow) < MOVED_PAWN_MOVING_RANGE || (dstRow - srcRow) > UNMOVED_PAWN_MOVING_RANGE)
+				int distance = 0;
+				if (this->_onlinePlayerColor == Color::white)
+				{
+					if (this->_color == Color::white)
+						distance = dstRow - srcRow;
+
+					else
+						distance = srcRow - dstRow;
+				}
+				else
+				{
+					if (this->_color == Color::white)
+						distance = srcRow - dstRow;
+
+					else
+						distance = dstRow - srcRow;
+				}
+				if (!(distance == MOVED_PAWN_MOVING_RANGE || distance == UNMOVED_PAWN_MOVING_RANGE))
 					return false;
 				else
 				{

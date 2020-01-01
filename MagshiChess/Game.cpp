@@ -93,7 +93,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 										}
 										checkedPlayer->undoMove(std::make_tuple(i, j, k, l), eaten);
 									}
-									else mate = false;
+									else mate = true;
 								}
 							}
 						}
@@ -229,11 +229,18 @@ void Game::playTurn(std::string& messageFromGraphics)
 	
 }
 //This function return the other player
-Player* Game::getOtherPlayer() {
-	/*
+Player* Game::getOtherPlayer() const
+{
 	if (this->_onlinePlayerColor != Color::white)
 		return this->_whitePlayer;
 	else return this->_blackPlayer;
-	*/
-	return this->_whitePlayer;
+
+}
+
+//This function return the online player
+Player* Game::getOnlinePlayer() const
+{
+	if (this->_onlinePlayerColor != Color::white)
+		return this->_blackPlayer;
+	else return this->_whitePlayer;
 }

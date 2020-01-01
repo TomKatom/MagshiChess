@@ -26,7 +26,7 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 		for (int j = 7; j >= 0; j--)
 		{
 			ch = startingBoard.at(i*8 +j);
-			if (isupper(ch) && (ch != 'q'))
+			if (isupper(ch))
 				piece_color = Color::white;
 			else
 				piece_color = Color::black;
@@ -39,7 +39,7 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 				break;
 			case 'p':
 			case 'P':
-				temp[i][j] = new Pawn(piece_color);
+				temp[i][j] = new Pawn(piece_color, onlinePlayerColor);
 				break;
 			case 'b':
 			case 'B':

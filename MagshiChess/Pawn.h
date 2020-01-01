@@ -7,11 +7,12 @@
 
 class Pawn : public Piece {
 public:
-	Pawn(Color c); 
+	Pawn(Color c, Color onlinePlayerColor); 
 	~Pawn();
 	bool validMove(Piece*** board, std::tuple<int,int,int,int> positions);
 
 private:
+	Color _onlinePlayerColor;
 	bool _moved;
 };
 

@@ -43,8 +43,10 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			guiSrcRow = 7 - srcRow;
 			srcCol = (msg[7] - '0');
 			guiDstRow = 7 - (msg[9] - '0');
+			dstRow = (msg[9] - '0');
 			dstCol = (msg[11] - '0');
 			g->getOtherPlayer()->makeMove(std::make_tuple(srcRow, srcCol, dstRow, dstCol));
+			g->getOnlinePlayer()->makeMove(std::make_tuple(srcRow, srcCol, dstRow, dstCol));
 			msg = "change ";
 			msg += (char)(guiSrcRow + '0'); 
 			msg += ','; 
@@ -134,14 +136,14 @@ int main()
 			//strcpy(msgToGraphics, "connect");
 
 			str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
-			str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
+			str4game ="rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 
 			g = new Game(str4game, p, change, mu, sock, Color::white);
 			g->setCurrTurn(true);
 		}
 	}
 	else {  //black
-		str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
+		str4gui =  "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
 		str4game = "RNBQKBNRPPPPPPPP################################pppppppprnbqkbnr";
 
 		g = new Game(str4game, p, change, mu, sock, Color::black);
@@ -162,18 +164,7 @@ int main()
 
 	while (msgFromGraphics != "quit")
 	{
-		// should handle the string the sent from graphics
-		// according the protocol. Ex: e2e4           (move e2 to e4)
-
-		// YOUR CODE
-		//strcpy_s(msgToGraphics, player.makeMove(msgFromGraphics)); // msgToGraphics should contain the result of the operation
-//		try {
-			g->playTurn(msgFromGraphics);
-
-		
-
-		// return result to graphics		
-		//p.sendMessageToGraphics(msgToGraphics);
+		g->playTurn(msgFromGraphics);
 
 		// get message from graphics
 		msgFromGraphics = p.getMessageFromGraphics();
