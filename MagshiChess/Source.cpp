@@ -23,6 +23,7 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 {
 	char data[10240] = { 0 };
 	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0, guiDstRow = 0, guiSrcRow = 0;
+	char crown = 0;
 	string msg = "";
 	string value = "";
 	std::size_t received;
@@ -80,17 +81,21 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			}
 		}
 		else if (msg.find("crown") != string::npos) {
+			std::unique_lock<std::mutex> lock(*mu);
+			crown = msg[10];
 			srcRow = msg[6] - '0';
 			srcCol = msg[8] - '0';
 			guiSrcRow = 7 - srcRow;
 			delete g->getOnlinePlayer()->getBoard()[srcRow][srcCol];
-			g->getOnlinePlayer()->getBoard()[srcRow][srcCol] = PipeInputOperations::getPieceFromChar(msg[10]);
+			g->getOnlinePlayer()->getBoard()[srcRow][srcCol] = PipeInputOperations::getPieceFromChar(crown);
+			delete g->getOtherPlayer()->getBoard()[srcRow][srcCol];
+			g->getOtherPlayer()->getBoard()[srcRow][srcCol] = PipeInputOperations::getPieceFromChar(crown);
 			msg = "change ";
 			msg += (char)guiSrcRow + '0';
 			msg += ',';
 			msg += (char)srcCol + '0';
 			msg += ' ';
-			msg += msg[10];
+			msg += crown;
 			strcpy(data, msg.c_str());
 			changePipe.sendMessageToGraphics(data);
 		}
@@ -149,7 +154,7 @@ int main()
 		return 0;
 	}
 	char msgToGraphics[10240];
-	sock->connect("127.0.0.1", 5000);
+	sock->connect("192.168.1.32", 5000);
 	chat.connect();
 	sock->receive(data, 10240, receieved);
 	if (std::string(data).find("wait") != std::string::npos) 
