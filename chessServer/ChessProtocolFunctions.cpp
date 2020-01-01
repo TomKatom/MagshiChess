@@ -28,45 +28,25 @@ void ChessProtocol::convertMoveCmd(char* data)
 	
 }
 
-std::tuple<char*, int, int, int, int, char> ChessProtocol::phraseDataToPos(char* data)
+void ChessProtocol::convertData(char* data)
 {
-	if (std::string(data).find("move") != std::string::npos)
-	{
-		char opcode[6];
-		strcpy(opcode, "crown");
-		opcode[5] = ' ';
-		return std::make_tuple(opcode, data[6], data[8], data[10], data[11], data[12]);
-	}
+	if (!isMoveCmd(data))
+		convertCrownCmd(data);
 	else
-	{
-		char opcode[5];
-		strcpy(opcode, "move");
-		opcode[4] = ' ';
-		return std::make_tuple(opcode, data[5], data[7], data[8], data[9], ' ');
-	}
+		convertMoveCmd(data);
+}
+void ChessProtocol::convertCrownCmd(char* data)
+{ 
+	int dstRow = 0, dstCol = 0;
+	dstRow = data[6] - '0';
+	dstCol = data[8] - '0';
+
+	data[6] = (char)(7 - dstRow + '0');
+	data[8] = (char)(7 - dstCol + '0');
+
 }
 
-char* ChessProtocol::convertPosToData(std::tuple<char*, int, int, int, int, char> data)
+bool ChessProtocol::isMoveCmd(char* data)
 {
-	auto [opcode, srcRow, srcCol, dstRow, dstCol, pieceChar] = data;
-	std::string new_data;
-	char* cstr;
-
-	new_data = static_cast<char>(srcRow) + static_cast<char>(srcCol) + static_cast<char>(dstRow) + static_cast<char>(dstCol);
-
-	if (strncmp(opcode, "move", 4) != 0)
-		new_data = "crown " + new_data + pieceChar ;
-
-	else
-		new_data = "move ";
-	
-	cstr = new char(new_data.length() + 1);
-
-	strcpy(cstr, new_data.c_str());
-	return cstr; 
-	
-}
-
-bool ChessProtocol::isMoveCmd(char* data) {
-	return std::string(data).find("move") != std::string::npos;
+	return (std::string(data).find("move") != std::string::npos);
 }
