@@ -126,7 +126,7 @@ int main()
 	chat.connect();
 	sock->receive(data, 10240, receieved);
 	if (strncmp(data, "wait", 4) == 0) {
-		strcpy(msgToGraphics, "wait");
+		strcpy(msgToGraphics, "connect");
 		sock->receive(data, 10240, receieved);
 		if (strncmp(data, "wait", 4) == 0)
 		{	//white
