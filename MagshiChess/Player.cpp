@@ -13,8 +13,8 @@ Player::Player(Color c, std::string startingBoard,Color onlinePlayerColor) //c't
 			this->_king = dynamic_cast<King*>(this->_board[0][4]); 
 	else
 			if(c == Color::black) 
-				this->_king = dynamic_cast<King*>((this->_board[0][4]));
-			else  this->_king = dynamic_cast<King*>((this->_board[7][4]));
+				this->_king = dynamic_cast<King*>((this->_board[0][3]));
+			else  this->_king = dynamic_cast<King*>((this->_board[7][3]));
 }
 
 Player::~Player()  //d'tor

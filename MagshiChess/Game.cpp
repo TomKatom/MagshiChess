@@ -228,6 +228,12 @@ void Game::playTurn(std::string& messageFromGraphics)
 	}
 	
 }
-Player* Game::getPlayer() {
+//This function return the other player
+Player* Game::getOtherPlayer() {
+	/*
+	if (this->_onlinePlayerColor != Color::white)
+		return this->_whitePlayer;
+	else return this->_blackPlayer;
+	*/
 	return this->_whitePlayer;
 }

@@ -29,12 +29,12 @@ Setting the pieceChar according to the color of the piece
 		if (color == Color::black)
 		{
 			this->_pos[0] = 0;
-			this->_pos[1] = 4;
+			this->_pos[1] = 3;
 		}
 		else
 		{
 			this->_pos[0] = 7;
-			this->_pos[1] = 4;
+			this->_pos[1] = 3;
 		}
 	}
 

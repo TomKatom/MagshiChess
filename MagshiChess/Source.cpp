@@ -29,7 +29,6 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 	while (true) {
 		sock->receive(data, 10240, received);
 		msg = string(data);
-		std::cout << "msg from server: " << msg;
 		if (msg.find("chat") != string::npos) {
 			std::cout << "Got msg cmd";
 			msg = "chat " + string(data);
@@ -38,15 +37,14 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			cout << "Received data " << endl;
 			std::cout << "Sent to pipe: " << msg << endl;
 		} // move 1,1 3,3
-		if (msg.find("move") != string::npos) {
-			std::cout << "got move cmd";
+		else if (msg.find("move") != string::npos) {
 			std::unique_lock<std::mutex> lock(*mu);
 			srcRow = (msg[5] - '0');
 			guiSrcRow = 7 - srcRow;
 			srcCol = (msg[7] - '0');
 			guiDstRow = 7 - (msg[9] - '0');
 			dstCol = (msg[11] - '0');
-			g->getPlayer()->makeMove(std::tuple<int, int, int, int>(srcRow, srcCol, dstRow, dstCol));
+			g->getOtherPlayer()->makeMove(std::make_tuple(srcRow, srcCol, dstRow, dstCol));
 			msg = "change ";
 			msg += (char)(guiSrcRow + '0'); 
 			msg += ','; 
@@ -61,7 +59,7 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			msg += ',';
 			msg += (char)(dstCol + '0');
 			msg += ' ';
-			msg += g->getPlayer()->getBoard()[dstRow][dstCol]->getPieceChar();
+			msg += g->getOtherPlayer()->getBoard()[dstRow][dstCol]->getPieceChar();
 			strcpy(data, msg.c_str());
 			data[msg.length() + 1] = 0;
 			changePipe.sendMessageToGraphics(data);
@@ -144,7 +142,7 @@ int main()
 	}
 	else {  //black
 		str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
-		str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr";
+		str4game = "RNBQKBNRPPPPPPPP################################pppppppprnbqkbnr";
 
 		g = new Game(str4game, p, change, mu, sock, Color::black);
 		g->setCurrTurn(false);
