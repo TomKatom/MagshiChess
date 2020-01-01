@@ -127,11 +127,14 @@ int main()
 	sock->connect("127.0.0.1", 5000);
 	chat.connect();
 	sock->receive(data, 10240, receieved);
-	if (std::string(data).find("wait") != std::string::npos) {
+	if (std::string(data).find("wait") != std::string::npos) 
+	{
 		strcpy(msgToGraphics, "wait");
 		sock->receive(data, 10240, receieved);
 		if (std::string(data).find("connect") != std::string::npos)
 		{	//white
+			//strcpy(msgToGraphics, "connect");
+
 			str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
 			str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 
