@@ -91,7 +91,6 @@ void ServerFunctions::forward_msg(sf::TcpSocket* sock1, sf::TcpSocket* sock2) //
 
 void ServerFunctions::matchThread(sf::TcpSocket* sock1, sf::TcpSocket* sock2)
 {
-	//std::mutex sock1_mu, sock2_mu;
 	std::thread(ServerFunctions::forward_msg, sock1, sock2).detach();
 	std::thread(ServerFunctions::forward_msg, sock2, sock1).detach();
 

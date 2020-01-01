@@ -26,8 +26,8 @@ Pawn::~Pawn()
 bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 {
 	auto [srcRow, srcCol, dstRow, dstCol] = positions;
-
 	int distance = 0;
+
 	if (this->_onlinePlayerColor == Color::white)
 	{
 		if (this->_color == Color::white)
@@ -48,11 +48,10 @@ bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 	if (board[dstRow][dstCol] != nullptr && board[dstRow][dstCol]->getColor() != this->_color)  //when eating enemy piece
 	{			
 		if (distance != MOVED_PAWN_MOVING_RANGE)
-		{
 			return false;
-		}
+		
 		else{
-			if (std::abs(dstRow - srcRow) == PAWN_EATING_MOVE_RANGE) {
+			if (std::abs(dstCol - srcCol) == PAWN_EATING_MOVE_RANGE) {
 				if (!this->_moved) this->_moved = true;  //update bool var _moved
 				return true;
 			}
