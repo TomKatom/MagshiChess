@@ -133,8 +133,8 @@ int main()
 		sock->receive(data, 10240, receieved);
 		if (std::string(data).find("connect") != std::string::npos)
 		{	//white
-			//strcpy(msgToGraphics, "connect");
-
+			strcpy(msgToGraphics, "connect");
+			p.sendMessageToGraphics(msgToGraphics);
 			str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
 			str4game ="rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 
