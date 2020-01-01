@@ -79,6 +79,21 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 				changePipe.sendMessageToGraphics(data);
 			}
 		}
+		else if (msg.find("crown") != string::npos) {
+			srcRow = msg[6] - '0';
+			srcCol = msg[8] - '0';
+			guiSrcRow = 7 - srcRow;
+			delete g->getOnlinePlayer()->getBoard()[srcRow][srcCol];
+			g->getOnlinePlayer()->getBoard()[srcRow][srcCol] = PipeInputOperations::getPieceFromChar(msg[10]);
+			msg = "change ";
+			msg += (char)guiSrcRow + '0';
+			msg += ',';
+			msg += (char)srcCol + '0';
+			msg += ' ';
+			msg += msg[10];
+			strcpy(data, msg.c_str());
+			changePipe.sendMessageToGraphics(data);
+		}
 	}
 }
 void chatPipeListener(sf::TcpSocket* sock, Pipe chatPipe) {

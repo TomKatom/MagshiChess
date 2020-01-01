@@ -140,10 +140,8 @@ void Game::playTurn(std::string& messageFromGraphics)
 				msg += moveType;
 				this->_sock->send(msg.c_str(), msg.length() + 1);
 
-				strcpy(msgToGraphics, "turn");
-				this->_change.sendMessageToGraphics(msgToGraphics);
 			}
-			if (choose_white) {
+			if (choose_white and this->getOnlinePlayer()->getColor() == Color::white) {
 				result = "";
 				strcpy(msgToGraphics, "choice white");
 				this->_change.sendMessageToGraphics(msgToGraphics);
@@ -178,7 +176,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 					break;
 				}
 			}
-			else if (choose_black) {
+			else if (choose_black and this->getOnlinePlayer()->getColor() == Color::black) {
 				result = "";
 				strcpy(msgToGraphics, "choice black");
 				this->_change.sendMessageToGraphics(msgToGraphics);
@@ -213,7 +211,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 				break;
 			}
 		}
-		if (choose_black or choose_white) {
+		if (choose_black and this->getOnlinePlayer()->getColor() == Color::black) {
 			msg = "change ";
 			msg += (char)(7 - dstRow + '0');
 			msg += ',';
@@ -222,6 +220,28 @@ void Game::playTurn(std::string& messageFromGraphics)
 			msg += result[0];
 			strcpy(msgToGraphics, msg.c_str());
 			this->_change.sendMessageToGraphics(msgToGraphics);
+			msg = "crown ";
+			msg += (char)dstRow + '0';
+			msg += (char)dstCol + '0';
+			msg += ' ';
+			msg += result[0];
+			this->_sock->send(msg.c_str(), msg.length() + 1);
+		}
+		else if (choose_white and this->getOnlinePlayer()->getColor() == Color::white) {
+			msg = "change ";
+			msg += (char)(7 - dstRow + '0');
+			msg += ',';
+			msg += (char)(dstCol + '0');
+			msg += ' ';
+			msg += result[0];
+			strcpy(msgToGraphics, msg.c_str());
+			this->_change.sendMessageToGraphics(msgToGraphics);
+			msg = "crown ";
+			msg += (char)dstRow + '0';
+			msg += (char)dstCol + '0';
+			msg += ' ';
+			msg += result[0];
+			this->_sock->send(msg.c_str(), msg.length() + 1);
 		}
 	}
 	else {
