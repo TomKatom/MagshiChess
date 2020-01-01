@@ -400,7 +400,7 @@ namespace chessGraphics
                     {
                         Invoke((MethodInvoker)delegate
                         {
-                            this.chatBox.AppendText("Opponent: " + m.Substring(5));
+                            this.chatBox.AppendText("Opponent: " + m.Substring(10));
                             this.chatBox.AppendText(Environment.NewLine);
                         });
                     }

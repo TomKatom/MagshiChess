@@ -517,6 +517,7 @@
             // chatBox
             // 
             this.chatBox.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.chatBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chatBox.Location = new System.Drawing.Point(644, 226);
             this.chatBox.Name = "chatBox";
             this.chatBox.ReadOnly = true;
