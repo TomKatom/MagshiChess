@@ -111,6 +111,7 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 		{
 			strcpy(data, "disconnect");
 			changePipe.sendMessageToGraphics(data);
+			_exit(0);
 		}
 		
 	}
