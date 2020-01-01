@@ -238,6 +238,7 @@ void Game::playTurn(std::string& messageFromGraphics)
 			this->_change.sendMessageToGraphics(msgToGraphics);
 			msg = "crown ";
 			msg += (char)dstRow + '0';
+			msg += ',';
 			msg += (char)dstCol + '0';
 			msg += ' ';
 			msg += result[0];
