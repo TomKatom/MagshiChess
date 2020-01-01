@@ -27,10 +27,27 @@ bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 {
 	auto [srcRow, srcCol, dstRow, dstCol] = positions;
 
+	int distance = 0;
+	if (this->_onlinePlayerColor == Color::white)
+	{
+		if (this->_color == Color::white)
+			distance = dstRow - srcRow;
+
+		else
+			distance = srcRow - dstRow;
+	}
+	else
+	{
+		if (this->_color == Color::white)
+			distance = srcRow - dstRow;
+
+		else
+			distance = dstRow - srcRow;
+	}
 
 	if (board[dstRow][dstCol] != nullptr && board[dstRow][dstCol]->getColor() != this->_color)  //when eating enemy piece
 	{			
-		if ((dstRow - srcRow) != MOVED_PAWN_MOVING_RANGE)
+		if (distance != MOVED_PAWN_MOVING_RANGE)
 		{
 			return false;
 		}
@@ -44,8 +61,6 @@ bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 		}
 
 	}
-	if (board[dstRow][dstCol] != nullptr)
-		return false;
 	else
 	{
 		if (srcCol != dstCol)
@@ -54,23 +69,7 @@ bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 		{
 			if (this->_moved) //piece moved already
 			{
-				int distance = 0;
-				if (this->_onlinePlayerColor == Color::white)
-				{
-					if (this->_color == Color::white)
-						distance = dstRow - srcRow;
 
-					else
-						distance = srcRow - dstRow;
-				}
-				else
-				{
-					if (this->_color == Color::white)
-						distance = srcRow - dstRow;  
-
-					else
-						distance = dstRow - srcRow;
-				}
 				if (distance != MOVED_PAWN_MOVING_RANGE)
 					return false;
 				else
@@ -78,23 +77,6 @@ bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
 			}
 			else  //first step
 			{
-				int distance = 0;
-				if (this->_onlinePlayerColor == Color::white)
-				{
-					if (this->_color == Color::white)
-						distance = dstRow - srcRow;
-
-					else
-						distance = srcRow - dstRow;
-				}
-				else
-				{
-					if (this->_color == Color::white)
-						distance = srcRow - dstRow;
-
-					else
-						distance = dstRow - srcRow;
-				}
 				if (!(distance == MOVED_PAWN_MOVING_RANGE || distance == UNMOVED_PAWN_MOVING_RANGE))
 					return false;
 				else
