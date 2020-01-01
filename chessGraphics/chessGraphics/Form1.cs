@@ -441,6 +441,13 @@ namespace chessGraphics
                             });
                         }
                     }
+                    else if (m.StartsWith("msg"))
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            this.lblResult.Text = convertEngineToText(m[4].ToString());
+                        });
+                    }
                     }
                     catch
                     {

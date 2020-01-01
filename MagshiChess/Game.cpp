@@ -137,7 +137,9 @@ void Game::playTurn(std::string& messageFromGraphics)
 				msg += ','; 
 				msg += (char)(dstCol + '0');
 				msg += ' ';
-				msg += moveType;
+				if (move_code == error_level_code::valid_check) {
+					msg += '1';
+				}
 				this->_sock->send(msg.c_str(), msg.length() + 1);
 
 			}
