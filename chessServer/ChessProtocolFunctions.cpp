@@ -1,14 +1,16 @@
 #include "ChessProtocolFunctions.hpp"
 #pragma warning(disable:4996)
-#include <cstring>
 #include <string>
 
 /*
-This function checks if the data that recived from the other player is movment cmd or not
+This function convert from one player positions on board to another - in the move/crown cmd (data*)
 */
-bool ChessProtocol::isMsgCmd(char* data)
+void ChessProtocol::convertData(char* data)
 {
-	return std::string(data).find("chat") != std::string::npos;
+	if (!isMoveCmd(data))
+		convertCrownCmd(data);
+	else
+		convertMoveCmd(data);
 }
 
 /*
@@ -28,13 +30,9 @@ void ChessProtocol::convertMoveCmd(char* data)
 	
 }
 
-void ChessProtocol::convertData(char* data)
-{
-	if (!isMoveCmd(data))
-		convertCrownCmd(data);
-	else
-		convertMoveCmd(data);
-}
+/*
+This function convert from one player positions on board to another - in the crown cmd (data*)
+*/
 void ChessProtocol::convertCrownCmd(char* data)
 { 
 	int dstRow = 0, dstCol = 0;
@@ -46,7 +44,18 @@ void ChessProtocol::convertCrownCmd(char* data)
 
 }
 
+/*
+This function checks if data is move cmd
+*/
 bool ChessProtocol::isMoveCmd(char* data)
 {
 	return (std::string(data).find("move") != std::string::npos);
+}
+
+/*
+This function checks if data is msg cmd
+*/
+bool ChessProtocol::isMsgCmd(char* data)
+{
+	return std::string(data).find("chat") != std::string::npos;
 }
