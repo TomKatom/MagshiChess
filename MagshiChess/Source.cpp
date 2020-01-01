@@ -158,7 +158,7 @@ int main()
 		return 0;
 	}
 	char msgToGraphics[10240];
-	sock->connect("192.168.1.32", 5000);
+	sock->connect("45.32.177.133", 6000);
 	chat.connect();
 	sock->receive(data, 10240, receieved);
 	if (std::string(data).find("wait") != std::string::npos) 
