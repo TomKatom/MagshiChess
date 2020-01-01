@@ -168,6 +168,8 @@ int main()
 		}
 	}
 	else {  //black
+		strcpy(msgToGraphics, "connect");
+		p.sendMessageToGraphics(msgToGraphics);
 		str4gui =  "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
 		str4game = "RNBQKBNRPPPPPPPP################################pppppppprnbqkbnr";
 
