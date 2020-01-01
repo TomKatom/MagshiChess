@@ -126,9 +126,8 @@ int main()
 	chat.connect();
 	sock->receive(data, 10240, receieved);
 	if (strncmp(data, "wait", 4) == 0) {
-		strcpy(msgToGraphics, "connect");
 		sock->receive(data, 10240, receieved);
-		if (strncmp(data, "wait", 4) == 0)
+		if (strncmp(data, "connect", 4) == 0)
 		{	//white
 			str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
 			str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
