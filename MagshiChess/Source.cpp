@@ -1,9 +1,3 @@
-/*
-This file servers as an example of how to use Pipe.h file.
-It is recommended to use the following code in your project,
-in order to read and write information from and to the Backend
-*/
-
 #include "Pipe.h"
 #include "Player.h"
 #include "Game.h"
@@ -18,6 +12,59 @@ std::mutex* mu;
 using std::cout;
 using std::endl;
 using std::string;
+
+
+void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g);
+void chatPipeListener(sf::TcpSocket* sock, Pipe chatPipe);
+std::tuple<sf::TcpSocket*, Game*, string, string> connectToServer(Pipe p, Pipe change);
+std::tuple<Pipe, Pipe, Pipe> connectToPipes();
+
+
+int main()
+{
+	mu = new std::mutex;
+	srand(time_t(NULL));
+	string str4gui = "";  
+	string str4game = "";
+	sf::TcpSocket* sock = new sf::TcpSocket();
+	Game* g = nullptr;
+	Pipe p, change, chat;
+	char msgToGraphics[10240];
+
+	try {
+		std::tie(p, change, chat) = connectToPipes();
+		std::tie(sock, g, str4gui, str4game) = connectToServer(p, change);
+	}
+	catch (std::exception & e) {
+		cout << e.what();
+		_exit(0);
+	}
+
+	std::thread(serverListener, sock, chat, change, g).detach();
+	std::thread(chatPipeListener, sock, chat).detach();
+
+	strcpy_s(msgToGraphics, str4gui.c_str());
+	p.sendMessageToGraphics(msgToGraphics);   // send the board string to graphics
+
+	// get message from graphics
+	string msgFromGraphics = p.getMessageFromGraphics();
+
+	while (msgFromGraphics != "quit")
+	{
+		g->playTurn(msgFromGraphics);
+
+		// get message from graphics
+		msgFromGraphics = p.getMessageFromGraphics();
+	}
+
+	p.close();
+	chat.close();
+	change.close();
+	delete sock;
+	delete g;
+
+	return 0;
+}
 
 void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g)
 {
@@ -88,7 +135,7 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 				changePipe.sendMessageToGraphics(data);
 			}
 		}
-		else if (msg.find("crown") != string::npos) 
+		else if (msg.find("crown") != string::npos)
 		{
 			std::unique_lock<std::mutex> lock(*mu);
 			crown = msg[10];
@@ -107,6 +154,7 @@ void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g
 			msg += crown;
 			strcpy(data, msg.c_str());
 			changePipe.sendMessageToGraphics(data);
+		}
 		else  if (msg.find("disconnect") != string::npos)
 		{
 			strcpy(data, "disconnect");
@@ -126,97 +174,92 @@ void chatPipeListener(sf::TcpSocket* sock, Pipe chatPipe) {
 	}
 }
 
-int main()
-{
-	mu = new std::mutex;
-	srand(time_t(NULL));
-	std::string str4gui = "";  //white - check
-	std::string str4game ="";
-
-	//std::string str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";  //black - check
-	//std::string str4game = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr";
-
-	//ayer playerPl(white);
-	char data[10240] = { 0 };
-	std::size_t receieved;
-	Pipe p(0);
-	Pipe change(1);
-	Pipe chat(2);
-	bool isConnectP = p.connect();
-	bool isConnectChange = change.connect();
-	sf::TcpSocket* sock = new sf::TcpSocket();
-	Game* g = nullptr;
-	string ans;
-
-	while (!isConnectP && isConnectChange)
-	{
-		cout << "cant connect to graphics" << endl;
-		cout << "Do you try to connect again or exit? (0-try again, 1-exit)" << endl;
-		std::cin >> ans;
-
-		if (ans == "0")
-		{
-			cout << "trying connect again.." << endl;
-			Sleep(5000);
-			isConnectP = p.connect();
-			isConnectChange = change.connect();
-		}
-		else
-		{
-			p.close();
-			return 0;
-		}
-		return 0;
-	}
+std::tuple<sf::TcpSocket*, Game*, string, string> connectToServer(Pipe p, Pipe change){
 	char msgToGraphics[10240];
-	sock->connect("45.32.177.133", 6000);
-	chat.connect();
+	sf::TcpSocket* sock = new sf::TcpSocket();
+	string str4gui = "";
+	string str4game = "";
+	Game* g;
+	char data[10240];
+	std::size_t receieved;
+	//"45.32.177.133", 6000
+	if (sock->connect("127.0.0.1", 5000) != sf::Socket::Done) {
+		throw(std::exception("Connection to server failed"));
+	}
 	sock->receive(data, 10240, receieved);
-	if (std::string(data).find("wait") != std::string::npos) 
-	{
+	if (string(data).find("wait") != std::string::npos){
 		strcpy(msgToGraphics, "wait");
+		p.sendMessageToGraphics(msgToGraphics);
 		sock->receive(data, 10240, receieved);
-		if (std::string(data).find("connect") != std::string::npos)
+		if (string(data).find("connect") != string::npos)
 		{	//white
 			strcpy(msgToGraphics, "connect");
 			p.sendMessageToGraphics(msgToGraphics);
 			str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
-			str4game ="rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
+			str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 
 			g = new Game(str4game, p, change, mu, sock, Color::white);
 			g->setCurrTurn(true);
 		}
 	}
-	else {  //black
+	else if(string(data).find("connect") != string::npos) {  //black
 		strcpy(msgToGraphics, "connect");
 		p.sendMessageToGraphics(msgToGraphics);
-		str4gui =  "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
+		str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
 		str4game = "RNBQKBNRPPPPPPPP################################pppppppprnbqkbnr";
 
 		g = new Game(str4game, p, change, mu, sock, Color::black);
 		g->setCurrTurn(false);
 	}
-	std::thread(serverListener, sock, chat, change, g).detach();
-	std::thread(chatPipeListener, sock, chat).detach();
-
-	// msgToGraphics should contain the board string accord the protocol
-	// YOUR CODE
-
-	strcpy_s(msgToGraphics, str4gui.c_str()); // just example...
-
-	p.sendMessageToGraphics(msgToGraphics);   // send the board string
-
-	// get message from graphics
-	string msgFromGraphics = p.getMessageFromGraphics();
-
-	while (msgFromGraphics != "quit")
-	{
-		g->playTurn(msgFromGraphics);
-
-		// get message from graphics
-		msgFromGraphics = p.getMessageFromGraphics();
+	else {
+		throw(std::exception("Connection to server failed"));
 	}
 
-	p.close();
-	return 0;
+	strcpy(msgToGraphics, str4gui.c_str());
+	p.sendMessageToGraphics(msgToGraphics);   // send the board string
+
+	return std::make_tuple(sock, g, str4gui, str4game);
 }
+std::tuple<Pipe, Pipe, Pipe> connectToPipes()
+{
+	bool isConnectP = false;
+	bool isConnectChange = false;
+	bool isConnectChat = false;
+	Pipe p(0);
+	Pipe change(1);
+	Pipe chat(2);
+	string ans;
+
+	while (!isConnectP and !isConnectChange and !isConnectChat)
+	{
+		try {
+			isConnectP = p.connect();
+			isConnectChange = change.connect();
+			isConnectChat = chat.connect();
+		}
+		catch (...) {
+		}
+
+		if (isConnectP and isConnectChange and isConnectChat)
+			break;
+
+		cout << "cant connect to graphics" << endl;
+		cout << "Do you try to connect again or exit? (0-try again, 1-exit)" << endl;
+		std::cin >> ans;
+
+		if (ans != "0")
+		{
+			try {
+				p.close();
+				change.close();
+				chat.close();
+			}
+			catch (...){
+				throw(std::exception("Pipes Error"));
+			}
+			throw(std::exception("Quiting..."));
+		}
+	}
+	return std::make_tuple(p, change, chat);
+}
+

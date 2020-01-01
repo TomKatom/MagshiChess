@@ -5,15 +5,16 @@ int main()
 	sf::TcpListener listener;
 	std::vector<std::thread*> threads;
 	std::thread* match;
+	bool createdListeneSock = true;
 
-	while (true) 
+	if (listener.listen(5000) != sf::Socket::Done)
+		createdListeneSock = false;
+
+	while (createdListeneSock)
 	{
 		sf::TcpSocket* client1 = new sf::TcpSocket;
 		sf::TcpSocket* client2 = new sf::TcpSocket;
 
-		if (listener.listen(5000) != sf::Socket::Done)
-			continue;
-		
 		try {
 			ServerFunctions::createNewConnection(listener, client1, client2);
 		}
