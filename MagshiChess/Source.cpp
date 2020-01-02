@@ -28,11 +28,18 @@ int main()
 	string str4game = "";
 	sf::TcpSocket* sock = new sf::TcpSocket();
 	Game* g = nullptr;
-	Pipe p, change, chat;
+	//Pipe p, change, chat;
 	char msgToGraphics[10240];
 
+	Pipe p(0);
+	p.connect();
+	Pipe change(1);
+	change.connect();
+	Pipe chat(2);
+	chat.connect();
+
 	try {
-		std::tie(p, change, chat) = connectToPipes();
+		//std::tie(p, change, chat) = connectToPipes();
 		std::tie(sock, g, str4gui, str4game) = connectToServer(p, change);
 	}
 	catch (std::exception & e) {
@@ -187,7 +194,7 @@ std::tuple<sf::TcpSocket*, Game*, string, string> connectToServer(Pipe p, Pipe c
 	sock->receive(data, 10240, receieved);
 	if (string(data).find("wait") != std::string::npos){
 		strcpy(msgToGraphics, "wait");
-		p.sendMessageToGraphics(msgToGraphics);
+		change.sendMessageToGraphics(msgToGraphics);
 		sock->receive(data, 10240, receieved);
 		if (string(data).find("connect") != string::npos)
 		{	//white
