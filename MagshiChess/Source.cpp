@@ -181,8 +181,7 @@ std::tuple<sf::TcpSocket*, Game*, string, string> connectToServer(Pipe p, Pipe c
 	Game* g;
 	char data[10240];
 	std::size_t receieved;
-	//"45.32.177.133", 6000
-	if (sock->connect("127.0.0.1", 5000) != sf::Socket::Done) {
+	if (sock->connect("45.32.177.133", 6000) != sf::Socket::Done) {
 		throw(std::exception("Connection to server failed"));
 	}
 	sock->receive(data, 10240, receieved);
