@@ -303,7 +303,6 @@ namespace chessGraphics
                     else if (res.ToLower().StartsWith("valid"))
                     {
                         isCurPlWhite = !isCurPlWhite;
-                        lblCurrentPlayer.Text = isCurPlWhite ? "White" : "Black";
 
                         matBoard[dstSquare.Row, dstSquare.Col].BackgroundImage = matBoard[srcSquare.Row, srcSquare.Col].BackgroundImage;
                         matBoard[srcSquare.Row, srcSquare.Col].BackgroundImage = null;

@@ -246,6 +246,8 @@ void Game::playTurn(std::string& messageFromGraphics)
 			msg += result[0];
 			this->_sock->send(msg.c_str(), msg.length() + 1);
 		}
+		strcpy(msgToGraphics, "turn");
+		this->_change.sendMessageToGraphics(msgToGraphics);
 	}
 	else {
 		msgToGraphics[0] = (char)(2 + '0');
