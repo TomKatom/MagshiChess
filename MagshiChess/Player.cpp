@@ -19,18 +19,8 @@ Player::Player(Color c, std::string startingBoard,Color onlinePlayerColor) //c't
 
 Player::~Player()  //d'tor
 {
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			if (this->_board != nullptr) {
-				delete this->_board[i][j];
-			}
-		}
-	}
-	for (int i = 0; i < 8; i++) {
-		delete[] this->_board[i];
-	}
+	//TODO: Call the d'tor of the class that communicate with the server
 	delete[] this->_board;
-
 }
 
 King* Player::getKing()
