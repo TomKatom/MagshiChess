@@ -105,22 +105,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>SFML_STATIC;DEBUG_;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-<<<<<<< HEAD
-      <AdditionalIncludeDirectories>C:\Users\משתמש\c++\cpp---lesson-07\magshichess\SFML-2.5.1-64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-=======
       <AdditionalIncludeDirectories>..\SFML-2.5.1-64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
->>>>>>> feature/Multyplayer
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-<<<<<<< HEAD
-      <AdditionalLibraryDirectories>C:\Users\משתמש\c++\cpp---lesson-07\magshichess\SFML-2.5.1-64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-=======
       <AdditionalLibraryDirectories>..\SFML-2.5.1-64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
->>>>>>> feature/Multyplayer
       <AdditionalDependencies>sfml-system-s-d.lib;sfml-network-s-d.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
@@ -133,16 +125,9 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-<<<<<<< HEAD
       <AdditionalIncludeDirectories>..\SFML-2.5.1\include\</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>
-      </AdditionalUsingDirectories>
       <PreprocessorDefinitions>SFML_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <StringPooling>
-      </StringPooling>
-=======
-      <AdditionalIncludeDirectories>C:\Users\משתמש\c++\cpp---lesson-07\magshichess\SFML-2.5.1-64\include</AdditionalIncludeDirectories>
->>>>>>> feature/Multyplayer
+      <StringPooling></StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -150,20 +135,10 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-<<<<<<< HEAD
-<<<<<<< HEAD
       <AdditionalDependencies>sfml-network-s.lib;sfml-system-s.lib;ws2_32.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>..\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ShowProgress>LinkVerbose</ShowProgress>
-=======
->>>>>>> 328bfd88af08a2b3b043b6b0cc03e93ad56d973c
-=======
-      <AdditionalDependencies>sfml-network-s.lib;sfml-system-s.lib; ws2_32.lib;</AdditionalDependencies>
-      <OutputFile>
-      </OutputFile>
-      <AdditionalLibraryDirectories>..\SFML-2.5.1\lib;</AdditionalLibraryDirectories>
->>>>>>> feature/Multyplayer
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
