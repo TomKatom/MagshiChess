@@ -1,6 +1,4 @@
-# Project Title
-
-Multiplayer chess game  
+# Multiplayer chess game
 
 ![Image of Yaktocat](https://image.shutterstock.com/image-illustration/chess-victory-black-white-king-260nw-1033375864.jpg)
 
@@ -8,7 +6,7 @@ Multiplayer chess game
 
 Visual C++ Redistributable
 
-[VS Download site] (https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads)
+[VS Download site](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads)
 
 ### Installing
 
