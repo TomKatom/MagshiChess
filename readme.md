@@ -1,4 +1,4 @@
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+![Image of Yaktocat](https://image.shutterstock.com/image-illustration/chess-victory-black-white-king-260nw-1033375864.jpg)
 
 # Project Title
 
