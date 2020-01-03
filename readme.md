@@ -30,7 +30,7 @@ On the Executable folder there is the chess engine executable file - just downlo
 ## Authors
 
 * **Ariel Adjadj**  - [gitlab](https://gitlab.com/arieladjadj)
-* **Tom Chengich** - [gitlab] (https://gitlab.com/TomKatom)
+* **Tom Chengich** - [gitlab](https://gitlab.com/TomKatom)
 
 Magshimim(:
 
