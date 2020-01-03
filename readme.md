@@ -13,16 +13,14 @@ Visual C++ Redistributable
 Graphics executable:
 
 ```
-and on chessGraphics\chessGraphics\bin\Release there is the excutable for the graphics 
+On the Executable folder there is the chess graphics executable file 
 ```
 
 Engine executable:
 
 ```
-In release folder there is the engine executable file - just download and run it (after you run the graphics)
+On the Executable folder there is the chess engine executable file - just download and run it (after you run the graphics)
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Built With
 
