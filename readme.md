@@ -4,40 +4,27 @@
 
 Multiplayer chess game  
 
-## Getting Started
-
-
-
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Visual C++ Redistributable
 
-```
-Give examples
-```
+[VS Download site] (https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads)
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+Graphics executable:
 
 ```
-Give the example
+and on chessGraphics\chessGraphics\bin\Release there is the excutable for the graphics 
 ```
 
-And repeat
+Engine executable:
 
 ```
-until finished
+In release folder there is the engine executable file - just download and run it (before you run the graphics)
 ```
 
 End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-In release folder there is the engine excutable file
-and on chessGraphics\chessGraphics\bin\Release there is the excutable for the graphics 
 
 ## Built With
 
@@ -49,5 +36,5 @@ and on chessGraphics\chessGraphics\bin\Release there is the excutable for the gr
 * **Ariel Adjadj**  - [gitlab](https://gitlab.com/arieladjadj)
 * **Tom Chengich** - [gitlab] (https://gitlab.com/TomKatom)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+Magshimim(:
 
