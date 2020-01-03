@@ -53,8 +53,7 @@ private:
 	LPTSTR  strPipeName;
 
 public:
-
-	Pipe() { };  //default c'tor
+	Pipe() { ; } //default c'tor
 	Pipe(int choice)
 	{
 		if (choice == 1) {

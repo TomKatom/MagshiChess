@@ -13,10 +13,9 @@ using std::cout;
 using std::endl;
 using std::string;
 
-
 void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g);
 void chatPipeListener(sf::TcpSocket* sock, Pipe chatPipe);
-std::tuple<sf::TcpSocket*, Game*, string, string> connectToServer(Pipe p, Pipe change);
+std::tuple<sf::TcpSocket*, Game*, string, string> connectToServer(Pipe& p, Pipe& change);
 std::tuple<Pipe, Pipe, Pipe> connectToPipes();
 
 
@@ -28,18 +27,11 @@ int main()
 	string str4game = "";
 	sf::TcpSocket* sock = new sf::TcpSocket();
 	Game* g = nullptr;
-	//Pipe p, change, chat;
+	Pipe p, change, chat;
 	char msgToGraphics[10240];
 
-	Pipe p(0);
-	p.connect();
-	Pipe change(1);
-	change.connect();
-	Pipe chat(2);
-	chat.connect();
-
 	try {
-		//std::tie(p, change, chat) = connectToPipes();
+		std::tie(p, change, chat) = connectToPipes();
 		std::tie(sock, g, str4gui, str4game) = connectToServer(p, change);
 	}
 	catch (std::exception & e) {
@@ -180,7 +172,7 @@ void chatPipeListener(sf::TcpSocket* sock, Pipe chatPipe) {
 	}
 }
 
-std::tuple<sf::TcpSocket*, Game*, string, string> connectToServer(Pipe p, Pipe change){
+std::tuple<sf::TcpSocket*, Game*, string, string> connectToServer(Pipe& p, Pipe& change){
 	char msgToGraphics[10240];
 	sf::TcpSocket* sock = new sf::TcpSocket();
 	string str4gui = "";
@@ -199,7 +191,7 @@ std::tuple<sf::TcpSocket*, Game*, string, string> connectToServer(Pipe p, Pipe c
 		if (string(data).find("connect") != string::npos)
 		{	//white
 			strcpy(msgToGraphics, "connect");
-			p.sendMessageToGraphics(msgToGraphics);
+			change.sendMessageToGraphics(msgToGraphics);
 			str4gui = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR0";
 			str4game = "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR";
 
@@ -209,7 +201,7 @@ std::tuple<sf::TcpSocket*, Game*, string, string> connectToServer(Pipe p, Pipe c
 	}
 	else if(string(data).find("connect") != string::npos) {  //black
 		strcpy(msgToGraphics, "connect");
-		p.sendMessageToGraphics(msgToGraphics);
+		change.sendMessageToGraphics(msgToGraphics);
 		str4gui = "RNBKQBNRPPPPPPPP################################pppppppprnbkqbnr0";
 		str4game = "RNBQKBNRPPPPPPPP################################pppppppprnbqkbnr";
 
