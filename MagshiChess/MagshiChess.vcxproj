@@ -136,7 +136,7 @@
       <AdditionalDependencies>sfml-network-s.lib;sfml-system-s.lib; ws2_32.lib;</AdditionalDependencies>
       <OutputFile>
       </OutputFile>
-      <AdditionalLibraryDirectories>C:\Users\משתמש\c++\cpp---lesson-07\magshichess\SFML-2.5.1\lib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\SFML-2.5.1\lib;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
