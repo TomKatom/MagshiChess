@@ -8,11 +8,11 @@ class Game
 public:
 	Game(std::string& startingBoard, Pipe &p, Pipe& change, std::mutex* mu, sf::TcpSocket* sock, Color onlinePlayerColor);
 	~Game();
-	void setCurrTurn(bool turn);
-	Player* getOtherPlayer() const;
-	Player* getOnlinePlayer() const;
+	void setCurrTurn(bool turn); // setter
+	Player* getOtherPlayer() const; // getter
+	Player* getOnlinePlayer() const; // getter
 
-	void playTurn(std::string& getMessageFromGraphics);
+	void playTurn(std::string& getMessageFromGraphics); 
 
 private:
 	bool isValidCode(error_level_code e) const;

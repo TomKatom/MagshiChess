@@ -25,7 +25,8 @@ bool Rook::validMove(Piece*** board, std::tuple<int, int, int, int> positions)
 {
 	auto [srcRow, srcCol, dstRow, dstCol] = positions;
 
-	if (srcCol == dstCol) {
+	/* Checking that there are no pieces in between src and dst positions */
+	if (srcCol == dstCol) { // Top check
 		if (srcRow < dstRow) {
 			for (int i = srcRow + 1; i < dstRow; i++) {
 				if (board[i][srcCol] != nullptr) {
@@ -34,7 +35,7 @@ bool Rook::validMove(Piece*** board, std::tuple<int, int, int, int> positions)
 			}
 			return true;
 		}
-		else if (srcRow > dstRow) {
+		else if (srcRow > dstRow) { // Bottom check
 			for (int i = srcRow - 1; i > dstRow; i--) {
 				if (board[i][srcCol] != nullptr) {
 					return false;
@@ -44,7 +45,7 @@ bool Rook::validMove(Piece*** board, std::tuple<int, int, int, int> positions)
 		}
 	}
 	else if (srcRow == dstRow) {
-		if (srcCol < dstCol) {
+		if (srcCol < dstCol) { // Right check
 			for (int i = srcCol + 1; i < dstCol; i++) {
 				if (board[srcRow][i] != nullptr) {
 					return false;
@@ -52,7 +53,7 @@ bool Rook::validMove(Piece*** board, std::tuple<int, int, int, int> positions)
 			}
 			return true;
 		}
-		else if (srcCol > dstCol) {
+		else if (srcCol > dstCol) { // Left check
 			for (int i = srcCol - 1; i > dstCol; i--) {
 				if (board[srcRow][i] != nullptr) {
 					return false;

@@ -56,6 +56,11 @@ public:
 	Pipe() { ; } //default c'tor
 	Pipe(int choice)
 	{
+		/*
+		I had to this this way and not just get a string for the name of the pipe (even though i did it in the C# gui code.) because it would just not work.
+		Something to do with the cast for the strPipeName.
+		Anyways, this works.
+		*/
 		if (choice == 1) {
 			strPipeName = (LPTSTR)TEXT("\\\\.\\pipe\\changePipe");
 		}

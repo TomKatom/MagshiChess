@@ -5,6 +5,7 @@
 //c'tor
 Game::Game(std::string& startingBoard, Pipe& p, Pipe& change, std::mutex* mu, sf::TcpSocket* sock, Color onlinePlayerColor) : _p(p), _change(change)
 {
+	/* Creating the 2 players */
 	std::string revreseBoard = startingBoard;
 	reverse(revreseBoard.begin(), revreseBoard.end() );
 
@@ -23,7 +24,7 @@ Game::~Game()
 	delete this->_blackPlayer;
 }
 
-void Game::setCurrTurn(bool turn) {
+void Game::setCurrTurn(bool turn) { // setter
 	this->_thisTurn = turn;
 }
 
@@ -52,30 +53,31 @@ void Game::playTurn(std::string& messageFromGraphics)
 
 	char msgToGraphics[1024];
 
-	if (this->_thisTurn) {
+	if (this->_thisTurn) { // if its the local player's turn
 
 		if(this->_onlinePlayerColor == Color::white) move_code = this->_whitePlayer->isValidCMD(positions);
 		else move_code = this->_blackPlayer->isValidCMD(positions);
-		if (isValidCode(move_code))
+		if (isValidCode(move_code)) // if its even a valid move
 		{
-			std::unique_lock<std::mutex> lock(*_mu);
-			//TODO: change it when converting to multyplayer
-			this->_whitePlayer->makeMove(positions);
+			std::unique_lock<std::mutex> lock(*_mu); // locking the mutex to prevent a Race Condition
+			this->_whitePlayer->makeMove(positions); // making the move
 			this->_blackPlayer->makeMove(positions);
 
 			moveType = ' ';
 			this->_thisTurn = false;
 
-			if (this->_onlinePlayerColor != Color::black and this->_blackPlayer->getKing()->isChecked(this->_blackPlayer->getBoard()))
+			if (this->_onlinePlayerColor != Color::black and this->_blackPlayer->getKing()->isChecked(this->_blackPlayer->getBoard())) 
 				checkedPlayer = this->_blackPlayer;
 
 			else if (this->_onlinePlayerColor != Color::white and this->_whitePlayer->getKing()->isChecked(this->_whitePlayer->getBoard()))
 				checkedPlayer = this->_whitePlayer;
 
-			if (checkedPlayer != nullptr)
+			if (checkedPlayer != nullptr) // if a player is checked
 			{
 				moveType = 'c';
 				move_code = valid_check;
+				/* Checking for mate */
+				// PS: Yes, I know this is very efficent.
 				for (int i = 0; i < 8 and !notMate; i++) {
 					for (int j = 0; j < 8 and !notMate; j++) {
 						curr = checkedPlayer->getBoard()[i][j];
@@ -104,13 +106,13 @@ void Game::playTurn(std::string& messageFromGraphics)
 					moveType = 'm';
 					move_code = check_mate;
 					if (checkedPlayer->getColor() == Color::black) {
-						strcpy(msgToGraphics, "mate black");
+						strcpy(msgToGraphics, "mate black"); 
 					}
 					else {
 						strcpy(msgToGraphics, "mate white");
 					}
-					this->_change.sendMessageToGraphics(msgToGraphics);
-					this->_sock->send(std::string("mate").c_str(), std::string("mate").length() + 1);
+					this->_change.sendMessageToGraphics(msgToGraphics); // send a message to graphics
+					this->_sock->send(std::string("mate").c_str(), std::string("mate").length() + 1); // send a message to the server
 				//_exit(0);
 				}
 			}
@@ -118,15 +120,16 @@ void Game::playTurn(std::string& messageFromGraphics)
 		}
 
 			if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'P' and dstRow == 7) {
-				choose_white = true;
+				choose_white = true; // if the player reached the end with a pawn
 			}
 			else if (this->_whitePlayer->getBoard()[dstRow][dstCol] != nullptr and this->_whitePlayer->getBoard()[dstRow][dstCol]->getPieceChar() == 'p' and dstRow == 7) {
-				choose_black = true;
+				choose_black = true; // if the player reached the end with a pawn
 			}
 
 			msgToGraphics[0] = (char)(move_code + '0');
 			msgToGraphics[1] = 0;
 			this->_p.sendMessageToGraphics(msgToGraphics);
+			/* Crowning */
 			if (isValidCode(move_code)) {
 				msg = "move ";
 				msg += (char)(srcRow + '0');
@@ -246,18 +249,18 @@ void Game::playTurn(std::string& messageFromGraphics)
 			msg += result[0];
 			this->_sock->send(msg.c_str(), msg.length() + 1);
 		}
-		strcpy(msgToGraphics, "turn");
+		strcpy(msgToGraphics, "turn"); // update the gui turn text to the next player
 		this->_change.sendMessageToGraphics(msgToGraphics);
 	}
 	else {
 		msgToGraphics[0] = (char)(2 + '0');
 		msgToGraphics[1] = 0;
-		_p.sendMessageToGraphics(msgToGraphics);
+		_p.sendMessageToGraphics(msgToGraphics); // send a message to the gui that its not the local player's turn
 	}
 	
 }
 //This function return the other player
-Player* Game::getOtherPlayer() const
+Player* Game::getOtherPlayer() const // getter
 {
 	if (this->_onlinePlayerColor != Color::white)
 		return this->_whitePlayer;
@@ -266,7 +269,7 @@ Player* Game::getOtherPlayer() const
 }
 
 //This function return the online player
-Player* Game::getOnlinePlayer() const
+Player* Game::getOnlinePlayer() const // getter
 {
 	if (this->_onlinePlayerColor != Color::white)
 		return this->_blackPlayer;

@@ -6,6 +6,9 @@ Player::Player(Color c, std::string startingBoard,Color onlinePlayerColor) //c't
 {
 	this->_color = c;
 	this->_board = PipeInputOperations::generateBoard(this->_color, startingBoard, onlinePlayerColor);
+	/*
+	Creating the king object
+	*/
 	if (onlinePlayerColor == Color::white)
 		if(c == Color::black) 
 			this->_king = dynamic_cast<King*>((this->_board[7][4]));  //set king piece of player
@@ -23,22 +26,23 @@ Player::~Player()  //d'tor
 	delete[] this->_board;
 }
 
-King* Player::getKing()
+King* Player::getKing() // getter
 {
 	return this->_king;
 }
 
-Piece*** Player::getBoard()
+Piece*** Player::getBoard() // getter
 {
 	return this->_board;
 }
 std::tuple<bool, Piece*> Player::makeMove(std::tuple<int,int,int,int>positions)
 {
 	std::tuple<bool, Piece*> eatenPiece;
-	auto [srcRow, srcCol, dstRow, dstCol] = positions;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions; // gets the src and dst positons
 
-	if (dynamic_cast<King*>(this->_board[srcRow][srcCol]) != nullptr)
+	if (dynamic_cast<King*>(this->_board[srcRow][srcCol]) != nullptr) // if the move is moving the king
 	{
+		/* Updating the new king loctation */
 		King* temp = dynamic_cast<King*>(this->_board[srcRow][srcCol]);
 		int* new_pos = new int[2];
 		new_pos[0] = dstRow;
@@ -47,7 +51,7 @@ std::tuple<bool, Piece*> Player::makeMove(std::tuple<int,int,int,int>positions)
 		delete[] new_pos;
 	}
 
-	if (this->_board[dstRow][dstCol] == nullptr)
+	if (this->_board[dstRow][dstCol] == nullptr) // if we the move didnt eat any piece
 		eatenPiece = std::make_tuple(false, nullptr);
 	else eatenPiece = std::make_tuple(true, this->_board[dstRow][dstCol]);
 
@@ -61,17 +65,18 @@ std::tuple<bool, Piece*> Player::makeMove(std::tuple<int,int,int,int>positions)
 
 void Player::undoMove(std::tuple<int, int, int, int>positions, std::tuple<bool, Piece*> eatenPiece)
 {
-	auto [srcRow, srcCol, dstRow, dstCol] = positions;
-	auto [isEaten, eatenPiecePtr] = eatenPiece;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions; // getting the src and dst positions
+	auto [isEaten, eatenPiecePtr] = eatenPiece; // getting the eaten piece
 
 	Piece* temp1 = this->_board[dstRow][dstCol];
 	this->_board[srcRow][srcCol] = temp1;
-	if (!isEaten)
+	if (!isEaten) // the move didnt eat a piece
 		this->_board[dstRow][dstCol] = nullptr;
 	else this->_board[dstRow][dstCol] = eatenPiecePtr;
 
-	if (dynamic_cast<King*>(this->_board[srcRow][srcCol]) != nullptr)
+	if (dynamic_cast<King*>(this->_board[srcRow][srcCol]) != nullptr) // if we are undoing a move that moved the king
 	{
+		/* Updating the king location */
 		King* temp = dynamic_cast<King*>(this->_board[srcRow][srcCol]);
 		int* new_pos = new int[2];
 		new_pos[0] = srcRow;
@@ -80,13 +85,13 @@ void Player::undoMove(std::tuple<int, int, int, int>positions, std::tuple<bool, 
 	}
 }
 
-Color Player::getColor() const
+Color Player::getColor() const // getter 
 {
 	return this->_color;
 }
 error_level_code Player::isValidCMD(std::tuple<int, int, int, int> positions) 
 {
-	auto [srcRow, srcCol, dstRow, dstCol] = positions;
+	auto [srcRow, srcCol, dstRow, dstCol] = positions; // getting the src and dst positions
 	error_level_code response_code = valid;
 
 	//check error_level_code 2 - in src position there is no piece of curr player
@@ -108,7 +113,7 @@ error_level_code Player::isValidCMD(std::tuple<int, int, int, int> positions)
 	{
 		response_code = invalid_behevior; 
 	}
-	else   //TODO: add check to check and mate
+	else   
 	{
 		std::tuple<bool, Piece*> eatenPiece;
 		eatenPiece = this->makeMove(positions);

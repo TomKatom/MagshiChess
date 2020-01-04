@@ -5,5 +5,5 @@ class Knight : public Piece {
 public:
 	Knight(Color color);
 	~Knight();
-	bool validMove(Piece*** board, std::tuple<int, int, int, int> positions);
+	bool validMove(Piece*** board, std::tuple<int, int, int, int> positions); // implementing virtual function
 };

@@ -3,12 +3,16 @@
 
 std::tuple<int, int, int, int> PipeInputOperations::moveToPos(std::string move) {
 	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0;
-	srcRow = move[1] - '0'-1;
-	dstRow = move[3] - '0'-1;
+	/*
+	Convert the chars to int
+	*/
+	srcRow = move[1] - '0' - 1;
+	dstRow = move[3] - '0' - 1;
 	srcCol = move[0] - 'a';
 	dstCol = move[2] - 'a';
-	return std::make_tuple(srcRow, srcCol, dstRow, dstCol);
+	return std::make_tuple(srcRow, srcCol, dstRow, dstCol); // create tuple housing the src and dst positions
 }
+
 
 Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& startingBoard, Color onlinePlayerColor)
 {
@@ -16,6 +20,7 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 	Color piece_color;
 	char ch;
 
+	/* Allocate the array */
 	for (int i = 0; i < 8; i++)
 	{
 		temp[i] = new Piece * [8];
@@ -31,6 +36,7 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 			else
 				piece_color = Color::black;
 
+			/* Create a new piece according to the char */
 			switch (ch)
 			{
 			case 'r':
@@ -71,6 +77,8 @@ Piece*** PipeInputOperations::generateBoard(Color& playerColor, std::string& sta
 }
 
 Piece* PipeInputOperations::getPieceFromChar(char ch) {
+	/* Create a new Piece according to the char */
+	/* Used for the crowning */
 	switch (ch) {
 		case 'Q':
 			return new Queen(Color::white);
@@ -89,6 +97,9 @@ Piece* PipeInputOperations::getPieceFromChar(char ch) {
 			break;
 		case 'n':
 			return new Knight(Color::black);
+			break;
+		case '#':
+			return nullptr;
 			break;
 	}
 }

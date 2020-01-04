@@ -10,14 +10,13 @@ public:
 	King(Color color, std::string& startingBoard, Color onlinePlayerColor);
 	~King();
 
-	virtual bool validMove(Piece*** board, std::tuple<int, int, int, int> positions);
-	virtual bool isChecked(Piece*** board);
+	virtual bool validMove(Piece*** board, std::tuple<int, int, int, int> positions); // implementing virtual function
+	virtual bool isChecked(Piece*** board); // returns if the king is checked or not
 
-	void setPos(int* new_pos);
-	int* getPos() ;
+	void setPos(int* new_pos); // setter
+	int* getPos() ; // getter
 
 private:
 	bool _moved;
-	//bool _checked;
 	int* _pos; //pos[0] = row, pos[1] = col   
 };
