@@ -24,7 +24,6 @@ x86/
 [Aa][Rr][Mm]64/
 bld/
 [Bb]in/
-[Oo]bj/
 [Ll]og/
 
 # Visual Studio 2015/2017 cache/options directory
@@ -285,7 +284,6 @@ node_modules/
 _Pvt_Extensions
 
 # Paket dependency manager
-.paket/paket.exe
 paket-files/
 
 # FAKE - F# Make
