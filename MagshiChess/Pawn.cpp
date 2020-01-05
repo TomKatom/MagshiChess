@@ -23,7 +23,7 @@ Pawn::~Pawn()
 {
 }
 
-bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions)
+bool Pawn::validMove(Piece*** board,std::tuple<int,int,int,int> positions) 
 {
 	auto [srcRow, srcCol, dstRow, dstCol] = positions; // getting source and dst position
 	int distance = 0;

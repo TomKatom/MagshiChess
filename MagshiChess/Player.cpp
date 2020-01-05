@@ -26,7 +26,7 @@ Player::~Player()  //d'tor
 	delete[] this->_board;
 }
 
-King* Player::getKing() // getter
+King* Player::getKing() const // getter
 {
 	return this->_king;
 }

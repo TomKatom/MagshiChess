@@ -9,7 +9,7 @@ class Pawn : public Piece {
 public:
 	Pawn(Color c, Color onlinePlayerColor); 
 	~Pawn();
-	bool validMove(Piece*** board, std::tuple<int,int,int,int> positions); // implementing virtual function
+	bool validMove(Piece*** board, std::tuple<int,int,int,int> positions) ; // implementing virtual function
 
 private:
 	Color _onlinePlayerColor;

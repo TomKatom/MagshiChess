@@ -15,7 +15,7 @@ public:
 
 	std::tuple<bool, Piece*> makeMove(std::tuple<int, int, int, int> positions); // gets a move and "makes" it  (changes the values in the board) also returns the eaten piece
 	void undoMove(std::tuple<int, int, int, int>positions, std::tuple<bool, Piece*> eatenPiece); // gets a move and an eaten piece and undos that move
-	King* getKing(); // getter
+	King* getKing() const; // getter
 	Color getColor() const; // getter
 	Piece*** getBoard(); // getter
 	error_level_code isValidCMD(std::tuple<int, int, int, int> positions); // returns if a move is valid, checks everything.
