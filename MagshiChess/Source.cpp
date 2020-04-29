@@ -68,6 +68,7 @@ int main()
 
 void serverListener(sf::TcpSocket* sock, Pipe chatPipe, Pipe changePipe, Game* g)
 {
+	// Doing Code Review!
 	char data[10240] = { 0 };
 	int srcRow = 0, srcCol = 0, dstRow = 0, dstCol = 0, guiDstRow = 0, guiSrcRow = 0;
 	char crown = 0;
